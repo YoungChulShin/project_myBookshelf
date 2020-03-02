@@ -1,0 +1,17 @@
+package com.ggproject.myBookshelf.dto;
+
+import com.ggproject.myBookshelf.domain.ReadStatus;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Getter @Setter
+public class UpdateBookDto {
+
+    private ReadStatus readStatus;
+    private LocalDateTime readStart;
+    private LocalDateTime readEnd;
+    private String summaryLink;
+    private String memo;
+}

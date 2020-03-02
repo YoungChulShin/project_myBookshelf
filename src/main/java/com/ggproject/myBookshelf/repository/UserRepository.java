@@ -10,13 +10,13 @@ import javax.persistence.EntityManager;
 @Repository
 public class UserRepository {
 
-    private final EntityManager entityManager;
+    private final EntityManager em;
 
     public void save(User user) {
-        entityManager.persist(user);
+        em.persist(user);
     }
 
     public User findOne(String email) {
-        return entityManager.find(User.class, email);
+        return em.find(User.class, email);
     }
 }
