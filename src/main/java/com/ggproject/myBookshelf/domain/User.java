@@ -11,10 +11,19 @@ import java.util.List;
 public class User {
 
     @Id
+    @GeneratedValue
+    @Column(name = "user_id")
+    private Long id;
+
     private String email;
 
     private String name;
 
     @OneToMany(mappedBy = "user")
     private List<Book> bookList = new ArrayList<>();
+
+    public void update(String email, String name) {
+        this.email = email;
+        this.name = name;
+    }
 }

@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -13,21 +15,18 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public String join(User user) {
+    @Transactional
+    public Long join(User user) {
         validateDuplicateUser(user);
         userRepository.save(user);
-        return user.getEmail();
+        return user.getId();
     }
 
     private void validateDuplicateUser(User user) {
-        User findUser = userRepository.findOne(user.getEmail());
+        List<User> findUsers = userRepository.findByEmail(user.getEmail());
 
-        if (findUser == null) {
+        if (!findUsers.isEmpty()) {
             throw new IllegalStateException("이미 존재하는 사용자입니다");
         }
-    }
-
-    public User findUser(String email) {
-        return userRepository.findOne(email);
     }
 }

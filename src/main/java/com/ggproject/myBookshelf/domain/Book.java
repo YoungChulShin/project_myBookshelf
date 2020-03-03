@@ -16,7 +16,7 @@ public class Book {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "email")
+    @JoinColumn(name = "user_id")
     private User user;
 
     private String name;
