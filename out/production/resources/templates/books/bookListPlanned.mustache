@@ -8,17 +8,17 @@
         <!--메뉴-->
         <ul class="nav nav-pills nav-fill">
             <li class="nav-item">
-                <a class="nav-link active" href="#">읽는 중</a>
+                <a class="nav-link" href="#">읽는 중</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">읽을 예정</a>
+                <a class="nav-link active" href="#">읽을 예정</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">읽은</a>
             </li>
         </ul>
 
-        <!--로그아웃-->
+        <!--책추가-->
         <a href="#" class="btn btn-info">책 추가</a>
     </div>
 
@@ -27,17 +27,21 @@
     <!--책 목록 -->
     <table class="table">
         <col width="20%"/>
+        <col width="60%"/>
+        <col width="20%"/>
         <thead>
             <tr>
-                <th>순서</th>
+                <th>추가 날짜</th>
                 <th>제목</th>
+                <th>저자</th>
             </tr>
         </thead>
         <tbody id="tbody">
         {{#books}}
             <tr>
-                <td>{{id}}</td>
+                <td>{{cratedDateText}}</td>
                 <td><a href="/book/{{id}}">{{name}}</td>
+                <td>{{author}}</td>
             </tr>
         {{/books}}
         </tbody>

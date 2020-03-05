@@ -3,6 +3,7 @@ package com.ggproject.myBookshelf.controller;
 import com.ggproject.myBookshelf.domain.Book;
 import com.ggproject.myBookshelf.domain.ReadStatus;
 import com.ggproject.myBookshelf.domain.User;
+import com.ggproject.myBookshelf.dto.BookListResponseDto;
 import com.ggproject.myBookshelf.dto.BookSaveRequestDto;
 import com.ggproject.myBookshelf.dto.UserSaveRequestDto;
 import com.ggproject.myBookshelf.service.BookService;
@@ -26,14 +27,14 @@ public class BookController {
 
     @GetMapping("/books")
     public String bookList(Model model) {
-        long userId = 1;
-        List<Book> bookList = bookService.findBooks(userId, ReadStatus.READING);
+        Long userId = new Long(1);
+        List<BookListResponseDto> bookList = bookService.findBooks(userId, ReadStatus.READING);
         User user = userService.findOne(userId);
 
         model.addAttribute("books", bookList);
         model.addAttribute("userName", user.getName());
 
-        return "books/bookList";
+        return "books/bookListPlanned";
     }
 
     @PostConstruct
