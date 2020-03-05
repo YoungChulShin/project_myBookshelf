@@ -20,9 +20,9 @@ public class BookService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long save(Long userId, String bookName, String isbn, String author) {
+    public Long save(Long userId, String bookName, String isbn, String author, ReadStatus readStatus) {
         User user = userRepository.findOne(userId);
-        Book book = Book.createBook(user, bookName, isbn, author);
+        Book book = Book.createBook(user, bookName, isbn, author, readStatus);
         bookRepository.save(book);
 
         return book.getId();
@@ -44,7 +44,8 @@ public class BookService {
         return bookRepository.findOne(id);
     }
 
-    public List<Book> findBooks(ReadStatus readStatus) {
-        return bookRepository.findByReadStatus(readStatus);
+    public List<Book> findBooks(long userId, ReadStatus readStatus) {
+        User user = userRepository.findOne(userId);
+        return bookRepository.findByUser(user, readStatus);
     }
 }

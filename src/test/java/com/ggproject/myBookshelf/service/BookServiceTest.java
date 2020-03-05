@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @RunWith(SpringRunner.class)
@@ -84,6 +85,22 @@ public class BookServiceTest {
         Assert.assertEquals(updateBookDto.getMemo(), findBook.getMeno());
         Assert.assertEquals(updateBookDto.getSummaryLink(), findBook.getSummaryLink());
         Assert.assertEquals(updateBookDto.getReadStart(), findBook.getReadStart());
+    }
+
+    @Test
+    public void 사용자_책_조회() {
+
+        // given
+        User user = createUser();
+        Long bookId = bookService.save(user.getId(), "JPA", "1234567890", "신영철");
+
+        // when
+        List<Book> findBooks = bookService.findBooks(user.getId(), ReadStatus.PLANNED);
+
+        // then
+        Assert.assertEquals(1, findBooks.size());
+        Assert.assertEquals(ReadStatus.PLANNED, findBooks.get(0).getReadStatus());
+        Assert.assertEquals("JPA", findBooks.get(0).getName());
     }
 
     private User createUser() {

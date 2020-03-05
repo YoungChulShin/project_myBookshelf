@@ -2,6 +2,7 @@ package com.ggproject.myBookshelf.repository;
 
 import com.ggproject.myBookshelf.domain.Book;
 import com.ggproject.myBookshelf.domain.ReadStatus;
+import com.ggproject.myBookshelf.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -22,9 +23,10 @@ public class BookRepository {
         return em.find(Book.class, id);
     }
 
-    public List<Book> findByReadStatus(ReadStatus readStatus) {
-        return  em.createQuery("select b from Book b where b.readStatus = :readStatus", Book.class)
-                .setParameter("readStatus", readStatus.toString())
+    public List<Book> findByUser(User user, ReadStatus readStatus) {
+        return  em.createQuery("select b from Book b where b.user = :user and b.readStatus = :readStatus", Book.class)
+                .setParameter("user", user)
+                .setParameter("readStatus", readStatus)
                 .getResultList();
     }
 

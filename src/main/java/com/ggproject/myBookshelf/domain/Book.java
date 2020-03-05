@@ -36,13 +36,13 @@ public class Book {
 
     private String meno;
 
-    public static Book createBook(User user, String bookName, String isbn, String author) {
+    public static Book createBook(User user, String bookName, String isbn, String author, ReadStatus readStatus) {
         Book book = new Book();
         book.setUser(user);
         book.name = bookName;
         book.isbn = isbn;
         book.author = author;
-        book.readStatus = ReadStatus.PLANNED;
+        book.readStatus = readStatus;
 
         return book;
     }
