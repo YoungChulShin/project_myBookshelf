@@ -3,7 +3,8 @@ package com.ggproject.myBookshelf.service;
 import com.ggproject.myBookshelf.domain.Book;
 import com.ggproject.myBookshelf.domain.ReadStatus;
 import com.ggproject.myBookshelf.domain.User;
-import com.ggproject.myBookshelf.dto.UpdateBookDto;
+import com.ggproject.myBookshelf.dto.BookSaveRequestDto;
+import com.ggproject.myBookshelf.dto.BookUpdateRequestDto;
 import com.ggproject.myBookshelf.repository.BookRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,15 +38,16 @@ public class BookServiceTest {
     public void 책_추가() {
         // given
         User user = createUser();
+        BookSaveRequestDto requestDto = createBookSaveRequestDto();
 
         // when
-        Long bookId = bookService.save(user.getId(), "JPA", "1234567890", "신영철");
+        Long bookId = bookService.save(user.getId(), requestDto);
 
         // then
         Book findBook = bookService.findOne(bookId);
 
         Assert.assertEquals(ReadStatus.PLANNED, findBook.getReadStatus());
-        Assert.assertEquals("JPA", findBook.getName());
+        Assert.assertEquals("JPA 북", findBook.getName());
         Assert.assertEquals("1234567890", findBook.getIsbn());
         Assert.assertEquals(user.getBookList().get(0), findBook);
     }
@@ -54,7 +56,9 @@ public class BookServiceTest {
     public void 책_삭제() {
         // given
         User user = createUser();
-        Long bookId = bookService.save(user.getId(), "JPA", "1234567890", "신영철");
+        BookSaveRequestDto requestDto = createBookSaveRequestDto();
+
+        Long bookId = bookService.save(user.getId(), requestDto);
 
         // when
         bookService.delete(bookId);
@@ -67,24 +71,27 @@ public class BookServiceTest {
     public void 책_수정() {
         // given
         User user = createUser();
-        Long bookId = bookService.save(user.getId(), "JPA", "1234567890", "신영철");
+        BookSaveRequestDto requestDto = createBookSaveRequestDto();
 
-        UpdateBookDto updateBookDto = new UpdateBookDto();
-        updateBookDto.setReadStatus(ReadStatus.READING);
-        updateBookDto.setMemo("testMemo");
-        updateBookDto.setSummaryLink("www.google.com");
-        updateBookDto.setReadStart(LocalDateTime.now());
+        Long bookId = bookService.save(user.getId(), requestDto);
+
+        BookUpdateRequestDto bookUpdateRequestDto =  BookUpdateRequestDto.builder()
+                .readStatus(ReadStatus.READING)
+                .memo("testMemo")
+                .summaryLink("www.google.com")
+                .readStart(LocalDateTime.now())
+                .build();
 
         // when
-        bookService.update(bookId, updateBookDto);
+        bookService.update(bookId, bookUpdateRequestDto);
 
         // then
         Book findBook = bookRepository.findOne(bookId);
 
-        Assert.assertEquals(updateBookDto.getReadStatus(), findBook.getReadStatus());
-        Assert.assertEquals(updateBookDto.getMemo(), findBook.getMeno());
-        Assert.assertEquals(updateBookDto.getSummaryLink(), findBook.getSummaryLink());
-        Assert.assertEquals(updateBookDto.getReadStart(), findBook.getReadStart());
+        Assert.assertEquals(bookUpdateRequestDto.getReadStatus(), findBook.getReadStatus());
+        Assert.assertEquals(bookUpdateRequestDto.getMemo(), findBook.getMemo());
+        Assert.assertEquals(bookUpdateRequestDto.getSummaryLink(), findBook.getSummaryLink());
+        Assert.assertEquals(bookUpdateRequestDto.getReadStart(), findBook.getReadStart());
     }
 
     @Test
@@ -92,7 +99,8 @@ public class BookServiceTest {
 
         // given
         User user = createUser();
-        Long bookId = bookService.save(user.getId(), "JPA", "1234567890", "신영철");
+        BookSaveRequestDto requestDto = createBookSaveRequestDto();
+        Long bookId = bookService.save(user.getId(), requestDto);
 
         // when
         List<Book> findBooks = bookService.findBooks(user.getId(), ReadStatus.PLANNED);
@@ -100,14 +108,22 @@ public class BookServiceTest {
         // then
         Assert.assertEquals(1, findBooks.size());
         Assert.assertEquals(ReadStatus.PLANNED, findBooks.get(0).getReadStatus());
-        Assert.assertEquals("JPA", findBooks.get(0).getName());
+        Assert.assertEquals("JPA 북", findBooks.get(0).getName());
     }
 
     private User createUser() {
-        User user = new User();
-        user.update("go1323@gmail.com", "ycshin");
+        User user = User.create("go1323@gmail.com", "신영철");
         em.persist(user);
 
         return user;
+    }
+
+    private BookSaveRequestDto createBookSaveRequestDto(){
+        return  BookSaveRequestDto.builder()
+                .bookName("JPA 북")
+                .isbn("1234567890")
+                .author("신영철")
+                .readStatus(ReadStatus.PLANNED)
+                .build();
     }
 }

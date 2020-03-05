@@ -3,7 +3,8 @@ package com.ggproject.myBookshelf.service;
 import com.ggproject.myBookshelf.domain.Book;
 import com.ggproject.myBookshelf.domain.ReadStatus;
 import com.ggproject.myBookshelf.domain.User;
-import com.ggproject.myBookshelf.dto.UpdateBookDto;
+import com.ggproject.myBookshelf.dto.BookSaveRequestDto;
+import com.ggproject.myBookshelf.dto.BookUpdateRequestDto;
 import com.ggproject.myBookshelf.repository.BookRepository;
 import com.ggproject.myBookshelf.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,18 +21,37 @@ public class BookService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long save(Long userId, String bookName, String isbn, String author, ReadStatus readStatus) {
+    public Long save(Long userId, BookSaveRequestDto requestDto) {
         User user = userRepository.findOne(userId);
-        Book book = Book.createBook(user, bookName, isbn, author, readStatus);
+        if (user == null) {
+            throw new IllegalArgumentException("사용자 정보가 없습니다. Id:" + userId);
+        }
+
+        Book book = Book.create(user,
+                requestDto.getBookName(),
+                requestDto.getIsbn(),
+                requestDto.getAuthor(),
+                requestDto.getReadStatus());
         bookRepository.save(book);
 
         return book.getId();
     }
 
     @Transactional
-    public void update(Long id, UpdateBookDto updateBookDto) {
+    public Long update(long id, BookUpdateRequestDto requestDto) {
         Book book = bookRepository.findOne(id);
-        book.updateBook(updateBookDto);
+
+        if (book == null) {
+            throw new IllegalArgumentException("해당 책 정보가 없습니다. Id: " + id);
+        }
+
+        book.update(requestDto.getReadStatus(),
+                requestDto.getReadStart(),
+                requestDto.getReadEnd(),
+                requestDto.getSummaryLink(),
+                requestDto.getMemo());
+
+        return id;
     }
 
     @Transactional

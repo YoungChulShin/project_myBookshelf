@@ -1,6 +1,7 @@
 package com.ggproject.myBookshelf.service;
 
 import com.ggproject.myBookshelf.domain.User;
+import com.ggproject.myBookshelf.dto.UserSaveRequestDto;
 import com.ggproject.myBookshelf.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,11 +25,10 @@ public class UserServiceTest {
     public void 사용자_추가() throws Exception {
 
         // given
-        User user = new User();
-        user.update("go1323@gmail.com", "ycshin");
+        UserSaveRequestDto user = createUserDto("ycshin", "go1323@gmail.com");
 
         // when
-        Long userId = userService.join(user);
+        Long userId = userService.save(user);
 
         // then
         Assert.assertEquals(user, userRepository.findOne(userId));
@@ -37,17 +37,22 @@ public class UserServiceTest {
     @Test(expected = IllegalStateException.class)
     public void 중복_사용자_추가() throws Exception {
         // given
-        User user1 = new User();
-        user1.update("go1323@gmail.com", "ycshin");
+        UserSaveRequestDto user1 = createUserDto("ycshin", "go1323@gmail.com");
 
-        User user2 = new User();
-        user2.update("go1323@gmail.com", "mjseo");
+        UserSaveRequestDto user2 = createUserDto("mjseo", "go1323@gmail.com");
 
         // when
-        userService.join(user1);
-        userService.join(user2);
+        userService.save(user1);
+        userService.save(user2);
 
         // then
         Assert.fail();
+    }
+
+    private UserSaveRequestDto createUserDto(String name, String email) {
+        return UserSaveRequestDto.builder()
+                .name(name)
+                .email(email)
+                .build();
     }
 }

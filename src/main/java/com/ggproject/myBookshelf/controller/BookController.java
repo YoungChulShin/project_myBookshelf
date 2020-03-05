@@ -3,6 +3,8 @@ package com.ggproject.myBookshelf.controller;
 import com.ggproject.myBookshelf.domain.Book;
 import com.ggproject.myBookshelf.domain.ReadStatus;
 import com.ggproject.myBookshelf.domain.User;
+import com.ggproject.myBookshelf.dto.BookSaveRequestDto;
+import com.ggproject.myBookshelf.dto.UserSaveRequestDto;
 import com.ggproject.myBookshelf.service.BookService;
 import com.ggproject.myBookshelf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +38,20 @@ public class BookController {
 
     @PostConstruct
     public void setup() {
-        User user = new User();
-        user.update("go1323@gmail.com", "신영철");
-        userService.join(user);
+        UserSaveRequestDto userSaveRequestDto = UserSaveRequestDto.builder()
+                .email("go1323@gmail.com")
+                .name("신영철")
+                .build();
 
-        Long bookId = bookService.save(user.getId(), "JPA 북", "1234567890", "신영철", ReadStatus.READING);
+        Long userId = userService.save(userSaveRequestDto);
 
+        BookSaveRequestDto bookSaveRequestDto = BookSaveRequestDto.builder()
+                .bookName("JPA 북")
+                .isbn("1234567890")
+                .author("신영철")
+                .readStatus(ReadStatus.READING)
+                .build();
+
+        bookService.save(userId, bookSaveRequestDto);
     }
 }

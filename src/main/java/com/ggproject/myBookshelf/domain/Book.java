@@ -1,6 +1,5 @@
 package com.ggproject.myBookshelf.domain;
 
-import com.ggproject.myBookshelf.dto.UpdateBookDto;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -8,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-public class Book {
+public class Book extends BaseTimeEntity{
 
     @Id
     @GeneratedValue
@@ -34,9 +33,9 @@ public class Book {
 
     private String summaryLink;
 
-    private String meno;
+    private String memo;
 
-    public static Book createBook(User user, String bookName, String isbn, String author, ReadStatus readStatus) {
+    public static Book create(User user, String bookName, String isbn, String author, ReadStatus readStatus) {
         Book book = new Book();
         book.setUser(user);
         book.name = bookName;
@@ -47,12 +46,13 @@ public class Book {
         return book;
     }
 
-    public void updateBook(UpdateBookDto updateBookDto) {
-        this.readStatus = updateBookDto.getReadStatus();
-        this.readStart = updateBookDto.getReadStart();
-        this.readEnd = updateBookDto.getReadEnd();
-        this.summaryLink = updateBookDto.getSummaryLink();
-        this.meno = updateBookDto.getMemo();
+    public void update(ReadStatus readStatus, LocalDateTime readStart, LocalDateTime readEnd,
+                       String summaryLink, String memo) {
+        this.readStatus = readStatus;
+        this.readStart = readStart;
+        this.readEnd = readEnd;
+        this.summaryLink = summaryLink;
+        this.memo = memo;
     }
 
     private void setUser(User user) {
