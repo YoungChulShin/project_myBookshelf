@@ -21,9 +21,9 @@ public class BookListResponseDto {
     private LocalDateTime readEnd;
     private String memo;
 
-    private String readStartText;
-    private String readEndText;
-    private String cratedDateText;
+    private String readStartText = "";
+    private String readEndText = "";
+    private String cratedDateText = "";
 
     public BookListResponseDto(Book entity) {
         this.id = entity.getId();
