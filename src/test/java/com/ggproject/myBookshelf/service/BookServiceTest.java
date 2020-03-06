@@ -3,6 +3,7 @@ package com.ggproject.myBookshelf.service;
 import com.ggproject.myBookshelf.domain.Book;
 import com.ggproject.myBookshelf.domain.ReadStatus;
 import com.ggproject.myBookshelf.domain.User;
+import com.ggproject.myBookshelf.dto.BookListResponseDto;
 import com.ggproject.myBookshelf.dto.BookSaveRequestDto;
 import com.ggproject.myBookshelf.dto.BookUpdateRequestDto;
 import com.ggproject.myBookshelf.repository.BookRepository;
@@ -103,7 +104,7 @@ public class BookServiceTest {
         Long bookId = bookService.save(user.getId(), requestDto);
 
         // when
-        List<Book> findBooks = bookService.findBooks(user.getId(), ReadStatus.PLANNED);
+        List<BookListResponseDto> findBooks = bookService.findBooks(user.getId(), ReadStatus.PLANNED);
 
         // then
         Assert.assertEquals(1, findBooks.size());

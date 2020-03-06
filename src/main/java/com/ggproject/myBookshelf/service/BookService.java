@@ -3,6 +3,7 @@ package com.ggproject.myBookshelf.service;
 import com.ggproject.myBookshelf.domain.Book;
 import com.ggproject.myBookshelf.domain.ReadStatus;
 import com.ggproject.myBookshelf.domain.User;
+import com.ggproject.myBookshelf.dto.BookListResponseDto;
 import com.ggproject.myBookshelf.dto.BookSaveRequestDto;
 import com.ggproject.myBookshelf.dto.BookUpdateRequestDto;
 import com.ggproject.myBookshelf.repository.BookRepository;
@@ -12,8 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class BookService {
 
@@ -38,7 +41,7 @@ public class BookService {
     }
 
     @Transactional
-    public Long update(long id, BookUpdateRequestDto requestDto) {
+    public Long update(Long id, BookUpdateRequestDto requestDto) {
         Book book = bookRepository.findOne(id);
 
         if (book == null) {
@@ -64,8 +67,11 @@ public class BookService {
         return bookRepository.findOne(id);
     }
 
-    public List<Book> findBooks(long userId, ReadStatus readStatus) {
+    public List<BookListResponseDto> findBooks(Long userId, ReadStatus readStatus) {
         User user = userRepository.findOne(userId);
-        return bookRepository.findByUser(user, readStatus);
+
+        return bookRepository.findByUser(user, readStatus).stream()
+                .map(BookListResponseDto::new)
+                .collect(Collectors.toList());
     }
 }
