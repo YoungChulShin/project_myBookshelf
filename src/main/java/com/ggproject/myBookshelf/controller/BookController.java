@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -72,6 +73,7 @@ public class BookController {
         return "books/book-save";
     }
 
+
     @PostConstruct
     public void setup() {
         UserSaveRequestDto userSaveRequestDto = UserSaveRequestDto.builder()
@@ -85,7 +87,7 @@ public class BookController {
                 .bookName("JPA 북")
                 .isbn("1234567890")
                 .author("신영철")
-                .readStatus(ReadStatus.COMPLETED)
+                .readStatus(ReadStatus.READING)
                 .build();
 
         bookService.save(userId, bookSaveRequestDto);
