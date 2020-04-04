@@ -35,13 +35,13 @@ public class Book extends BaseTimeEntity{
 
     private String memo;
 
-    public static Book create(User user, String bookName, String isbn, String author, ReadStatus readStatus) {
+    public static Book create(User user, String bookName, String isbn, String author) {
         Book book = new Book();
         book.setUser(user);
         book.name = bookName;
         book.isbn = isbn;
         book.author = author;
-        book.readStatus = readStatus;
+        book.readStatus = ReadStatus.PLANNED;
 
         return book;
     }

@@ -33,8 +33,7 @@ public class BookService {
         Book book = Book.create(user,
                 requestDto.getBookName(),
                 requestDto.getIsbn(),
-                requestDto.getAuthor(),
-                requestDto.getReadStatus());
+                requestDto.getAuthor());
         bookRepository.save(book);
 
         return book.getId();
