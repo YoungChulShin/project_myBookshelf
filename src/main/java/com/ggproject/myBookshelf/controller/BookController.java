@@ -8,24 +8,23 @@ import com.ggproject.myBookshelf.dto.BookSaveRequestDto;
 import com.ggproject.myBookshelf.dto.UserSaveRequestDto;
 import com.ggproject.myBookshelf.service.BookService;
 import com.ggproject.myBookshelf.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class BookController {
 
-    @Autowired
-    BookService bookService;
-
-    @Autowired
-    UserService userService;
+    private final BookService bookService;
+    private final UserService userService;
 
     @GetMapping("/books/readingList")
     public String booksReading(Model model) {
@@ -69,10 +68,26 @@ public class BookController {
         User user = userService.findOne(userId);
 
         model.addAttribute("userName", user.getName());
+        model.addAttribute("saveForm", BookSaveRequestDto.builder().build());
 
         return "books/book-save";
     }
 
+    @PostMapping("/books/new")
+    public String create(@Valid BookSaveRequestDto form, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("saveForm", form);
+            return "books/book-save";
+        }
+
+        Long userId = 1L;
+        User user = userService.findOne(userId);
+
+        bookService.save(user.getId(), form);
+
+        return "redirect:/";
+    }
 
     @PostConstruct
     public void setup() {
