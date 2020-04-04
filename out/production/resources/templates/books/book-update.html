@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.com">
+
+<head th:replace="layouts/header :: header" />
+
+<body>
+<div class="container">
+
+    <div th:replace="layouts/body-header :: bodyHeader" />
+
+    <div class="col-md-12">
+        <h5 th:text="${updateForm.isbn}"></h5>
+        <br>
+
+    </div>
+
+    <div th:replace="layouts/footer :: footer" />
+
+</div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.com">
+
+<head th:replace="layouts/header :: header" />
+
+<body>
+<div class="container">
+
+    <div th:replace="layouts/body-header :: bodyHeader" />
+
+    <div class="col-md-12">
+        <h5 th:text="${updateForm.isbn}"></h5>
+        <br>
+        <form role="form" action="@{/books/{id}/update (id=${updateForm.id})}" th:object="${updateForm}" method="post">
+
+
+
+            <button type="submit" class="btn btn-primary btn-block">등록</button>
+            <a href="/" role="button" class="btn btn-secondary btn-block">취소</a>
+        </form>
+
+    </div>
+
+    <div th:replace="layouts/footer :: footer" />
+
+</div>
+</body>
+</html>

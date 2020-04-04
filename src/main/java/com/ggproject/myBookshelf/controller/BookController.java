@@ -5,6 +5,7 @@ import com.ggproject.myBookshelf.domain.ReadStatus;
 import com.ggproject.myBookshelf.domain.User;
 import com.ggproject.myBookshelf.dto.BookListResponseDto;
 import com.ggproject.myBookshelf.dto.BookSaveRequestDto;
+import com.ggproject.myBookshelf.dto.BookUpdateRequestDto;
 import com.ggproject.myBookshelf.dto.UserSaveRequestDto;
 import com.ggproject.myBookshelf.service.BookService;
 import com.ggproject.myBookshelf.service.UserService;
@@ -87,6 +88,17 @@ public class BookController {
         bookService.save(user.getId(), form);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/books/{bookId}/update")
+    public String updateForm(@PathVariable("bookId") Long bookId, Model model) {
+
+        Book findBook = bookService.findOne(bookId);
+        BookUpdateRequestDto updateDto = new BookUpdateRequestDto(findBook);
+
+        model.addAttribute("updateForm", updateDto);
+
+        return "books/book-update";
     }
 
     @PostConstruct
