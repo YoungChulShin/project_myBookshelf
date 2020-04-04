@@ -102,7 +102,6 @@ public class BookController {
                 .bookName("JPA 북")
                 .isbn("1234567890")
                 .author("신영철")
-                .readStatus(ReadStatus.READING)
                 .build();
 
         bookService.save(userId, bookSaveRequestDto);

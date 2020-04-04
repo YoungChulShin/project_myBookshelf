@@ -8,30 +8,12 @@
 <body>
 <div class="container">
 
-    <div th:replace="layouts/bodyHeader :: bodyHeader" />
+    <div th:replace="layouts/body-header :: bodyHeader" />
 
     <div class="col-md-12">
 
         <!--상단-->
-        <div class="row justify-content-between align-items-center m-2">
-
-            <!--메뉴-->
-            <ul class="nav nav-pills nav-fill">
-                <li class="nav-item">
-                    <a class="nav-link" href="/books/readingList">읽는 중</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="/books/plannedList">읽을 예정</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/books/completedList">읽은</a>
-                </li>
-            </ul>
-
-            <!--책추가-->
-            <a href="#" class="btn btn-info">책 추가</a>
-        </div>
-
+        <div th:replace="layouts/book-list-header :: bookListHeader(readStatus='PLANNED')" />
         <br>
 
         <!--책 목록 -->
@@ -42,7 +24,7 @@
             <col width="20%"/>
             <thead>
             <tr>
-                <th>Id</th>
+                <th style="display:none;">Id</th>
                 <th>등록 날짜</th>
                 <th>제목</th>
                 <th>저자</th>
@@ -50,7 +32,7 @@
             </thead>
             <tbody>
             <tr th:each="book : ${books}">
-                <td th:text="${book.id}"></td>
+                <td th:text="${book.id}" style="display:none;"></td>
                 <td th:text="${book.cratedDateText}"></td>
                 <td><a href="#" th:href="@{/book/{id} (id=${book.id})}" th:text="${book.name}"/></td>
                 <td th:text="${book.author}"></td>

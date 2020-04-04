@@ -19,13 +19,10 @@ public class BookSaveRequestDto {
 
     private String author;
 
-    private ReadStatus readStatus;
-
     @Builder
-    public BookSaveRequestDto(String bookName, String isbn, String author, ReadStatus readStatus) {
+    public BookSaveRequestDto(String bookName, String isbn, String author) {
         this.bookName = bookName;
         this.isbn = isbn;
         this.author = author;
-        this.readStatus = readStatus;
     }
 }
