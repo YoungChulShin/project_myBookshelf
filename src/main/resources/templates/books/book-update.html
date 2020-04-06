@@ -9,20 +9,69 @@
     <div th:replace="layouts/body-header :: bodyHeader" />
 
     <div class="col-md-12">
-        <h5 th:text="${updateForm.isbn}"></h5>
+        <h5 th:text="${updateForm.name}"></h5>
         <br>
+<!--        <form role="form" action="@{/books/{id}/update (id=${updateForm.id})}" th:object="${updateForm}" method="post">-->
+
+<!--            <div class="form-group row">-->
+<!--                <label th:for="bookName">책 제목</label>-->
+<!--                <div class="col-sm-10">-->
+<!--                    <input type="text" class="form-control" th:field="*{name}"/>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <button type="submit" class="btn btn-primary btn-block">수정</button>-->
+<!--            <a href="/" role="button" class="btn btn-secondary btn-block">삭제</a>-->
+<!--        </form>-->
         <form role="form" action="@{/books/{id}/update (id=${updateForm.id})}" th:object="${updateForm}" method="post">
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label">제목</label>
+                <div class="form-group col-md-10">
+                    <input type="text" class="form-control" th:field="*{name}"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label">저자</label>
+                <div class="form-group col-md-10">
+                    <input type="text" class="form-control" th:field="*{author}"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label">ISBN</label>
+                <div class="form-group col-md-10">
+                    <input type="text" class="form-control" th:field="*{isbn}"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label">독서 상태</label>
+                <div class="form-group col-md-10">
+                    <select id="readStatus" th:field="*{readStatus}" class="custom-select">
+                        <option th:each="readStatus : ${T(com.ggproject.myBookshelf.domain.ReadStatus).values()}"
+                                th:value="${readStatus}" th:text="${readStatus.displayValue}"/>
+                    </select>
+                </div>
+            </div>
 
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label">독서 기간</label>
+                <div class="form-group col-md-10">
+                    <input type="text" id="datePicker" class="form-control" value="2019-06-27">
+                </div>
+            </div>
 
-
-            <button type="submit" class="btn btn-primary btn-block">등록</button>
-            <a href="/" role="button" class="btn btn-secondary btn-block">취소</a>
+<!--                        <button type="submit" class="btn btn-primary btn-block">수정</button>-->
+<!--                        <a href="/" role="button" class="btn btn-secondary btn-block">삭제</a>-->
         </form>
-
     </div>
 
     <div th:replace="layouts/footer :: footer" />
 
 </div>
 </body>
+<script>
+function() {
+    $('.datepicker').datepicker();
+}
+</script>
+
 </html>

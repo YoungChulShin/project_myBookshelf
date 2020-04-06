@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class BookUpdateRequestDto {
 
     private Long id;
+    private String name;
     private String isbn;
     private String author;
     private ReadStatus readStatus;
@@ -34,6 +35,7 @@ public class BookUpdateRequestDto {
 
     public BookUpdateRequestDto(Book book) {
         this.id = book.getId();
+        this.name = book.getName();
         this.isbn = book.getIsbn();
         this.author = book.getAuthor();
         this.readStatus = book.getReadStatus();
