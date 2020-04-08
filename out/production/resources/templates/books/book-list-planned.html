@@ -34,7 +34,7 @@
             <tr th:each="book : ${books}">
                 <td th:text="${book.id}" style="display:none;"></td>
                 <td th:text="${book.cratedDateText}"></td>
-                <td><a href="#" th:href="@{/book/{id} (id=${book.id})}" th:text="${book.name}"/></td>
+                <td><a href="#" th:href="@{/books/{id}/update (id=${book.id})}" th:text="${book.name}"/></td>
                 <td th:text="${book.author}"></td>
             </tr>
             </tbody>
