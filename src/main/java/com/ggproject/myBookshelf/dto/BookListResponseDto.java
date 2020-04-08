@@ -5,6 +5,7 @@ import com.ggproject.myBookshelf.domain.ReadStatus;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -17,8 +18,8 @@ public class BookListResponseDto {
     private String isbn;
     private String author;
     private ReadStatus readStatus;
-    private LocalDateTime readStart;
-    private LocalDateTime readEnd;
+    private LocalDate readStart;
+    private LocalDate readEnd;
     private String memo;
 
     private String readStartText = "";

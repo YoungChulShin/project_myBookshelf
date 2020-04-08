@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -101,6 +105,36 @@ public class BookController {
         return "books/book-update";
     }
 
+    @PostMapping("/books/{bookId}/update")
+    public String update(@PathVariable("bookId") Long bookId, BookUpdateRequestDto form) {
+
+        form.setId(bookId);
+        if (form.getReadStartString() == "") {
+            form.setReadStart(null);
+        } else {
+            form.setReadStart(LocalDate.parse(form.getReadStartString(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }
+        if (form.getReadEndString() == "") {
+            form.setReadEnd(null);
+        } else {
+            form.setReadEnd(LocalDate.parse(form.getReadEndString(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }
+
+        bookService.update(bookId, form);
+
+        return getBookListPageAddress(form.getReadStatus());
+    }
+
+    @PostMapping("/books/{bookId}/delete")
+    public String delete(@PathVariable("bookId") Long bookId) {
+
+        Book book = bookService.findOne(bookId);
+        ReadStatus readStatus = book.getReadStatus();
+        bookService.delete(bookId);
+
+        return getBookListPageAddress(readStatus);
+    }
+
     @PostConstruct
     public void setup() {
         UserSaveRequestDto userSaveRequestDto = UserSaveRequestDto.builder()
@@ -117,5 +151,16 @@ public class BookController {
                 .build();
 
         bookService.save(userId, bookSaveRequestDto);
+    }
+
+    private String getBookListPageAddress(ReadStatus readStatus) {
+
+        if (readStatus == ReadStatus.PLANNED) {
+            return "redirect:/books/plannedList";
+        } else if (readStatus == ReadStatus.READING) {
+            return "redirect:/books/readingList";
+        } else {
+            return "redirect:/books/completedList";
+        }
     }
 }
