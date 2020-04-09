@@ -135,23 +135,23 @@ public class BookController {
         return getBookListPageAddress(readStatus);
     }
 
-    @PostConstruct
-    public void setup() {
-        UserSaveRequestDto userSaveRequestDto = UserSaveRequestDto.builder()
-                .email("go1323@gmail.com")
-                .name("신영철")
-                .build();
-
-        Long userId = userService.save(userSaveRequestDto);
-
-        BookSaveRequestDto bookSaveRequestDto = BookSaveRequestDto.builder()
-                .bookName("JPA 북")
-                .isbn("1234567890")
-                .author("신영철")
-                .build();
-
-        bookService.save(userId, bookSaveRequestDto);
-    }
+//    @PostConstruct
+//    public void setup() {
+//        UserSaveRequestDto userSaveRequestDto = UserSaveRequestDto.builder()
+//                .email("go1323@gmail.com")
+//                .name("신영철")
+//                .build();
+//
+//        Long userId = userService.save(userSaveRequestDto);
+//
+//        BookSaveRequestDto bookSaveRequestDto = BookSaveRequestDto.builder()
+//                .bookName("JPA 북")
+//                .isbn("1234567890")
+//                .author("신영철")
+//                .build();
+//
+//        bookService.save(userId, bookSaveRequestDto);
+//    }
 
     private String getBookListPageAddress(ReadStatus readStatus) {
 
