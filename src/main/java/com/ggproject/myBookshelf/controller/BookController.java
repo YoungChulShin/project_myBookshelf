@@ -1,5 +1,6 @@
 package com.ggproject.myBookshelf.controller;
 
+import com.ggproject.myBookshelf.config.auth.LoginUser;
 import com.ggproject.myBookshelf.config.auth.dto.SessionUser;
 import com.ggproject.myBookshelf.domain.Book;
 import com.ggproject.myBookshelf.domain.ReadStatus;
@@ -28,37 +29,34 @@ public class BookController {
     private final HttpSession httpSession;
 
     @GetMapping("/api/v1/books/readingList")
-    public String booksReading(Model model) {
+    public String booksReading(Model model, @LoginUser SessionUser user) {
 
-        SessionUser sessionUser = (SessionUser)httpSession.getAttribute("user");
-        List<BookListResponseDto> bookList = bookService.findBooks(sessionUser.getId(), ReadStatus.READING);
+        List<BookListResponseDto> bookList = bookService.findBooks(user.getId(), ReadStatus.READING);
 
         model.addAttribute("books", bookList);
-        model.addAttribute("userName", sessionUser.getName());
+        model.addAttribute("userName", user.getName());
 
         return "books/book-list-reading";
     }
 
     @GetMapping("/api/v1/books/plannedList")
-    public String booksPlanned(Model model) {
+    public String booksPlanned(Model model, @LoginUser SessionUser user) {
 
-        SessionUser sessionUser = (SessionUser)httpSession.getAttribute("user");
-        List<BookListResponseDto> bookList = bookService.findBooks(sessionUser.getId(), ReadStatus.PLANNED);
+        List<BookListResponseDto> bookList = bookService.findBooks(user.getId(), ReadStatus.PLANNED);
 
         model.addAttribute("books", bookList);
-        model.addAttribute("userName", sessionUser.getName());
+        model.addAttribute("userName", user.getName());
 
         return "books/book-list-planned";
     }
 
     @GetMapping("/api/v1/books/completedList")
-    public String booksCompleted(Model model) {
+    public String booksCompleted(Model model, @LoginUser SessionUser user) {
 
-        SessionUser sessionUser = (SessionUser)httpSession.getAttribute("user");
-        List<BookListResponseDto> bookList = bookService.findBooks(sessionUser.getId(), ReadStatus.COMPLETED);
+        List<BookListResponseDto> bookList = bookService.findBooks(user.getId(), ReadStatus.COMPLETED);
 
         model.addAttribute("books", bookList);
-        model.addAttribute("userName", sessionUser.getName());
+        model.addAttribute("userName", user.getName());
 
         return "books/book-list-completed";
     }

@@ -1,7 +1,7 @@
 package com.ggproject.myBookshelf.controller;
 
+import com.ggproject.myBookshelf.config.auth.LoginUser;
 import com.ggproject.myBookshelf.config.auth.dto.SessionUser;
-import com.ggproject.myBookshelf.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +15,10 @@ public class IndexController {
     private final HttpSession httpSession;
 
     @GetMapping("/")
-    public String index() {
+    public String index(@LoginUser SessionUser loginUser) {
 
-        httpSession.removeAttribute("user");
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
-        if (user != null) {
+        //SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        if (loginUser != null) {
             return "redirect:/api/v1/books/plannedList";
         } else {
             return "index";
