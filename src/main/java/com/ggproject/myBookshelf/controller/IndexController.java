@@ -17,6 +17,7 @@ public class IndexController {
     @GetMapping("/")
     public String index() {
 
+        httpSession.removeAttribute("user");
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
         if (user != null) {
             return "redirect:/api/v1/books/plannedList";
