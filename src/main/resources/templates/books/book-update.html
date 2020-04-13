@@ -11,7 +11,7 @@
     <div class="col-md-12">
         <h5 th:text="${updateForm.name}"></h5>
         <br>
-        <form role="form" th:action="@{/books/{id}/update (id=${updateForm.id})}" th:object="${updateForm}" method="post">
+        <form role="form" th:action="@{/api/v1/books/{id}/update (id=${updateForm.id})}" th:object="${updateForm}" method="post">
             <div class="form-row">
                 <label class="col-sm-2 col-form-label">제목</label>
                 <div class="form-group col-md-10">
@@ -132,7 +132,7 @@ $(function() {
 function cancel(id) {
     var form = document.createElement("form");
     form.setAttribute("method", "post");
-    form.setAttribute("action", "/books/" + id + "/delete");
+    form.setAttribute("action", "/api/v1/books/" + id + "/delete");
     document.body.appendChild(form);
     form.submit();
 }

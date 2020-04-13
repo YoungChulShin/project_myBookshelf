@@ -15,7 +15,7 @@
     <div class="col-md-12">
         <h5>책 추가하기</h5>
         <br>
-        <form role="form" action="#" th:action="@{/books/new}" th:object="${saveForm}" method="post">
+        <form role="form" action="#" th:action="@{/api/v1/books/new}" th:object="${saveForm}" method="post">
             <div class="form-group">
                 <label th:for="bookName">책 제목</label>
                 <input type="text" class="form-control" th:field="*{bookName}" placeholder="책 제목을 입력하세요"
