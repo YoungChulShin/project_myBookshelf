@@ -13,6 +13,8 @@ spring:
         format_sql: true
   profiles:
     include: oauth
+  session:
+    store-type: jdbc
 
 logging:
   level:
