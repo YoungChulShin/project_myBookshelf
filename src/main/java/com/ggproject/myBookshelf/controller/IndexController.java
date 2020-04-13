@@ -17,7 +17,6 @@ public class IndexController {
     @GetMapping("/")
     public String index(@LoginUser SessionUser loginUser) {
 
-        //SessionUser user = (SessionUser) httpSession.getAttribute("user");
         if (loginUser != null) {
             return "redirect:/api/v1/books/plannedList";
         } else {

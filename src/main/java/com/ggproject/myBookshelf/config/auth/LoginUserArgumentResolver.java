@@ -21,7 +21,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     public boolean supportsParameter(MethodParameter parameter) {
 
         boolean isLoginUserAnnotation = parameter.getParameterAnnotation(LoginUser.class) != null;
-        boolean isSessionUserClass = SessionUser.class.equals(parameter.getParameter());
+        boolean isSessionUserClass = SessionUser.class.equals(parameter.getParameterType());
 
         return isLoginUserAnnotation && isSessionUserClass;
     }
