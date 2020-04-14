@@ -14,7 +14,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User findOne(Long id) {
-        return userRepository.findOne(id);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(("사용자 정보를 찾을 수 없습니다. Id: " + id)));
     }
 
     public User findOneByEmail(String email) {
