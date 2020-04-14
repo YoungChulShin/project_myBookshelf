@@ -25,51 +25,48 @@ public class BookService {
 
     @Transactional
     public Long save(Long userId, BookSaveRequestDto requestDto) {
-        User user = userRepository.findOne(userId);
-        if (user == null) {
-            throw new IllegalArgumentException("사용자 정보가 없습니다. Id:" + userId);
-        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다. Id:" + userId));
 
         Book book = Book.create(user,
                 requestDto.getBookName(),
                 requestDto.getIsbn(),
                 requestDto.getAuthor());
-        bookRepository.save(book);
 
-        return book.getId();
+        Book createdBook = bookRepository.save(book);
+
+        return createdBook.getId();
     }
 
     @Transactional
     public Long update(Long id, BookUpdateRequestDto requestDto) {
-        Book book = bookRepository.findOne(id);
-
-        if (book == null) {
-            throw new IllegalArgumentException("해당 책 정보가 없습니다. Id: " + id);
-        }
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 책 정보가 없습니다. Id: " + id));
 
         book.update(requestDto.getReadStatus(),
-                requestDto.getReadStart(),
-                requestDto.getReadEnd(),
-                requestDto.getSummaryLink(),
-                requestDto.getMemo());
+                    requestDto.getReadStart(),
+                    requestDto.getReadEnd(),
+                    requestDto.getSummaryLink(),
+                    requestDto.getMemo());
 
         return id;
     }
 
     @Transactional
     public void delete(Long id) {
-        Book book = bookRepository.findOne(id);
-        bookRepository.delete(book);
+        bookRepository.deleteById(id);
     }
 
     public Book findOne(Long id) {
-        return bookRepository.findOne(id);
+        return bookRepository.findById(id).orElse(null);
     }
 
     public List<BookListResponseDto> findBooks(Long userId, ReadStatus readStatus) {
-        User user = userRepository.findOne(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException(("사용자 정보를 찾을 수 없습니다. Id: " + userId)));
 
-        return bookRepository.findByUser(user, readStatus).stream()
+        return bookRepository.findByUserAndReadStatus(user, readStatus).stream()
                 .map(BookListResponseDto::new)
                 .collect(Collectors.toList());
     }
