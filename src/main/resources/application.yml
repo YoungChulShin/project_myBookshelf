@@ -1,13 +1,6 @@
 spring:
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/myBookshelf
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
-    properties:
-      hibernate:
-        format_sql: true
   profiles:
+    active: default
     include: oauth
   session:
     store-type: jdbc
@@ -15,3 +8,15 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+
+---
+
+spring:
+  profiles: real
+    include: [oauth, real-db]
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  session:
+    store-type: jdbc
