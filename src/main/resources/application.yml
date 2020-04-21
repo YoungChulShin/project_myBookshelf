@@ -1,7 +1,12 @@
 spring:
   profiles:
-    active: default
-    include: oauth
+    active: local
+
+---
+
+spring:
+  profiles: local
+  profiles.include: oauth
   session:
     store-type: jdbc
 
@@ -13,7 +18,7 @@ logging:
 
 spring:
   profiles: real
-    include: [oauth, real-db]
+  profiles.include: [oauth, real-db]
   jpa:
     properties:
       hibernate:
