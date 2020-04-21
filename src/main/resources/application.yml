@@ -9,6 +9,10 @@ spring:
   profiles.include: oauth
   session:
     store-type: jdbc
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 
 logging:
   level:
