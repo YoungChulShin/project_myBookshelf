@@ -6,13 +6,12 @@ spring:
 
 spring:
   profiles: local
-  profiles.include: oauth
+  profiles.include: oauth, api
   session:
     store-type: jdbc
   jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: create
 
 logging:
   level:
@@ -22,7 +21,7 @@ logging:
 
 spring:
   profiles: real
-  profiles.include: oauth, real-db
+  profiles.include: oauth, real-db, api
   jpa:
     properties:
       hibernate:

@@ -1,6 +1,6 @@
 package com.ggproject.myBookshelf.dto;
 
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,15 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class BookSearchResponseDto {
 
-    private String title;
-
-    private List<String> authors = new ArrayList<>();
-
-    private String isbn;
-
-    private String thumbnail;
-
-    private String url;
-
-    private String status;
+    @JsonProperty("documents")
+    private List<BookSearchDocumentDto> documents = new ArrayList<>();
 }

@@ -9,7 +9,6 @@ import com.ggproject.myBookshelf.dto.BookSaveRequestDto;
 import com.ggproject.myBookshelf.dto.BookSearchResponseDto;
 import com.ggproject.myBookshelf.dto.BookUpdateRequestDto;
 import com.ggproject.myBookshelf.service.BookService;
-import com.ggproject.myBookshelf.service.UserService;
 import com.ggproject.myBookshelf.service.api.BookSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -66,9 +65,6 @@ public class BookController {
 
     @GetMapping("/api/v1/books/new")
     public String createForm(Model model) {
-
-        BookSearchResponseDto dto = bookSearchService.getBookInformations("토비의 스프링");
-
 
         SessionUser sessionUser = (SessionUser)httpSession.getAttribute("user");
 
