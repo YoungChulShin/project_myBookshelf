@@ -64,14 +64,31 @@ public class BookController {
     }
 
     @GetMapping("/api/v1/books/new")
-    public String createForm(Model model) {
+    public String createForm(Model model, @LoginUser SessionUser user) {
 
-        SessionUser sessionUser = (SessionUser)httpSession.getAttribute("user");
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("searchKeyword", "");
+        model.addAttribute("searchResult", new BookSearchResponseDto().getDocuments());
 
-        model.addAttribute("userName", sessionUser.getName());
-        model.addAttribute("saveForm", BookSaveRequestDto.builder().build());
+        return "books/book-search-save";
+    }
 
-        return "books/book-save";
+    @GetMapping("/api/v1/books/new/{searchKeyword}")
+    public String createForm(@PathVariable("searchKeyword") String searchKeyword,
+                             Model model,
+                             @LoginUser SessionUser user) {
+
+        if (searchKeyword == "") {
+            return  "redirect:/api/v1/books/new";
+        }
+
+        BookSearchResponseDto bookInformations = bookSearchService.getBookInformations(searchKeyword);
+
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("searchKeyword", searchKeyword);
+        model.addAttribute("searchResult", bookInformations.getDocuments());
+
+        return "books/book-search-save";
     }
 
     @PostMapping("/api/v1/books/new")
@@ -79,7 +96,7 @@ public class BookController {
 
         if (result.hasErrors()) {
             model.addAttribute("saveForm", form);
-            return "books/book-save";
+            return "books/book-search-save";
         }
 
         SessionUser sessionUser = (SessionUser)httpSession.getAttribute("user");

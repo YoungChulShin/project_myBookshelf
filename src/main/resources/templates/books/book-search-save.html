@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.com">
+
+<head th:replace="layouts/header :: header" />
+<style>
+.fieldError { border-color: #bd2130;
+} </style>
+
+<body>
+
+<div class="container">
+
+    <div th:replace="layouts/body-header :: bodyHeader" />
+
+    <div class="col-md-12">
+
+        <h5>책 추가하기</h5>
+        <br>
+
+
+<!--        <form role="form" action="#" th:action="@{/api/v1/books/new}" th:object="${saveForm}" method="post">-->
+
+        <div class="input-group">
+            <input id="search-keyword" type="text" class="form-control" placeholder="제목 또는 저자를 입력해주세요">
+            <button id="btn-search-book" class="btn btn-info" type="button" style="margin:0 0 0 10px">검색</button>
+        </div>
+
+
+
+        <br>
+        <a href="/" role="button" class="btn btn-secondary btn-block">돌아가기</a>
+    </div>
+
+    <div th:replace="layouts/footer :: footer" />
+
+</div>
+
+</body>
+
+<script src="/js/app/main.js"></script>
+
+</html>
