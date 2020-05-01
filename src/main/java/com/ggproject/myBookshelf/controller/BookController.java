@@ -88,7 +88,8 @@ public class BookController {
         model.addAttribute("searchKeyword", searchKeyword);
         model.addAttribute("searchResult", bookInformations.getDocuments());
 
-        return "books/book-search-save";
+        //return "books/book-search-save";
+        return "books/book-list-planned";
     }
 
     @PostMapping("/api/v1/books/new")
