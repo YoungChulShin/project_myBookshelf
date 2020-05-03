@@ -1,17 +1,30 @@
-#spring:
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/myBookshelf
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
-#  jpa:
-#    hibernate:
-#      ddl-auto: create
-#    properties:
-#      hibernate:
-#  #      show_sql: true
-#        format_sql: true
-#
-#logging:
-#  level:
-#    org.hibernate.sql: debug
+spring:
+  profiles:
+    active: local
+
+---
+
+spring:
+  profiles: local
+  profiles.include: oauth, api
+  session:
+    store-type: jdbc
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+
+---
+
+spring:
+  profiles: real
+  profiles.include: oauth, real-db, api
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  session:
+    store-type: jdbc
