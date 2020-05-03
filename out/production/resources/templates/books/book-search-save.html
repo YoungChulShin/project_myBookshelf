@@ -17,26 +17,95 @@
         <h5>책 추가하기</h5>
         <br>
 
-
-<!--        <form role="form" action="#" th:action="@{/api/v1/books/new}" th:object="${saveForm}" method="post">-->
-
         <div class="input-group">
             <input id="search-keyword" type="text" class="form-control" placeholder="제목 또는 저자를 입력해주세요">
-            <button id="btn-search-book" class="btn btn-info" type="button" style="margin:0 0 0 10px">검색</button>
+            <button id="btn-search-book" class="btn btn-info" type="button" onclick="searchBook()" style="margin:0 0 0 10px">검색</button>
         </div>
 
+        <br>
 
+        <!--검색 목록-->
+        <table class="table">
+            <col width="20%"/>
+            <col width="60%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <thead>
+            <tr>
+                <th>사진</th>
+                <th>제목</th>
+                <th>정보</th>
+                <th>선택</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="searchItem, i : ${searchResult}">
+                <td><img th:src="${searchItem.thumbnail}" width="100px" height="100px" /></td>
+                <td>
+                    <dl>
+                        <dt th:id="'titleId' + ${i.index}" th:text="'제목 : ' + ${searchItem.title}" />
+                        <dt th:id="'authorId' + ${i.index}" th:text="'저자 : ' + ${#strings.listJoin(searchItem.authors, ', ')}"/>
+                        <dt th:id="'isbnId' + ${i.index}" th:text="'ISBN : ' + ${#strings.arraySplit(searchItem.isbn, ' ')[#lists.size(#strings.arraySplit(searchItem.isbn, ' ')) - 1]}"/>
+                    </dl>
+                </td>
+                <td>
+                    <a th:href="${searchItem.url}" target="_blank" role="button" class="btn btn-secondary" th:text="정보"/>
+                </td>
+                <td>
+                    <a th:href="'javascript:createBook('+${i.index}+')'" role="button" class="btn btn-primary">선택</a>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
 
         <br>
         <a href="/" role="button" class="btn btn-secondary btn-block">돌아가기</a>
     </div>
-
-    <div th:replace="layouts/footer :: footer" />
-
 </div>
+
+<div th:replace="layouts/footer :: footer" />
 
 </body>
 
-<script src="/js/app/main.js"></script>
+<script>
+
+    function searchBook() {
+        let searchKeyword = document.getElementById("search-keyword").value;
+
+        if (searchKeyword == "") {
+            alert('검색어를 입력해주세요');
+            return;
+        }
+
+        let form = document.createElement("form");
+        form.setAttribute("method", "get");
+        form.setAttribute("action", "/api/v1/books/new/" + searchKeyword);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function createBook(id) {
+        const data = {
+            bookName: document.getElementById("titleId" + id).textContent.split(':')[1].trim(),
+            isbn: document.getElementById("isbnId" + id).textContent.split(':')[1].trim(),
+            author: document.getElementById("authorId" + id).textContent.split(':')[1].trim()
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/books/new',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function () {
+            alert('책이 등록되었습니다');
+            window.location.href = '/api/v1/books/plannedList';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    }
+
+</script>
 
 </html>

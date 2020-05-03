@@ -91,14 +91,6 @@ public class BookController {
         return "books/book-search-save";
     }
 
-    @ResponseBody
-    @PostMapping("/api/v1/books/new")
-    public Long create(@RequestBody BookSaveRequestDto bookSaveRequest,  Model model) {
-
-        SessionUser sessionUser = (SessionUser)httpSession.getAttribute("user");
-        return bookService.save(sessionUser.getId(), bookSaveRequest);
-    }
-
     @GetMapping("/api/v1/books/{bookId}/update")
     public String updateForm(@PathVariable("bookId") Long bookId, Model model, @LoginUser SessionUser user) {
 
@@ -129,16 +121,6 @@ public class BookController {
         bookService.update(bookId, form);
 
         return getBookListPageAddress(form.getReadStatus());
-    }
-
-    @PostMapping("/api/v1/books/{bookId}/delete")
-    public String delete(@PathVariable("bookId") Long bookId) {
-
-        Book book = bookService.findOne(bookId);
-        ReadStatus readStatus = book.getReadStatus();
-        bookService.delete(bookId);
-
-        return getBookListPageAddress(readStatus);
     }
 
     private String getBookListPageAddress(ReadStatus readStatus) {

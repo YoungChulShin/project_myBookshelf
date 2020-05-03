@@ -2,12 +2,14 @@ package com.ggproject.myBookshelf.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 
-@Getter
+@NoArgsConstructor
 @Setter
+@Getter
 public class BookSaveRequestDto {
 
     @NotEmpty(message = "책 이름은 필수 값입니다")

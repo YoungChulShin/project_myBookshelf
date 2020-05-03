@@ -3,6 +3,7 @@ package com.ggproject.myBookshelf.dto;
 import com.ggproject.myBookshelf.domain.Book;
 import com.ggproject.myBookshelf.domain.ReadStatus;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@NoArgsConstructor
 @Getter @Setter
 public class BookUpdateRequestDto {
 
@@ -29,8 +31,6 @@ public class BookUpdateRequestDto {
     private String readEndString;
     private String summaryLink;
     private String memo;
-
-    public BookUpdateRequestDto() {}
 
     public BookUpdateRequestDto(Book book) {
         this.id = book.getId();

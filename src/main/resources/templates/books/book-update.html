@@ -70,16 +70,14 @@
             </div>
             <br>
             <button type="submit" class="btn btn-primary btn-block">수정</button>
-            <a href="#" th:href="'javascript:cancel('+${updateForm.id}+')'" role="button" class="btn btn-danger btn-block">삭제</a>
         </form>
+
+        <button type="button" class="btn btn-danger btn-block" th:onclick="'cancel(' + ${updateForm.id} + ')'">삭제</button>
     </div>
 
     <div th:replace="layouts/footer :: footer" />
 
 </div>
-
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
 
 </body>
 <script>
@@ -130,15 +128,20 @@
     });//ready end
 
     function cancel(id) {
-        var form = document.createElement("form");
-        form.setAttribute("method", "post");
-        form.setAttribute("action", "/api/v1/books/" + id + "/delete");
-        document.body.appendChild(form);
-        form.submit();
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/books/' + id + '/delete',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+        }).done(function() {
+            window.location.href = '/api/v1/books/plannedList';
+        }).fail(function(error) {
+            alert(JSON.stringify(error));
+        });
     }
 
     function getSummaryLinkValue(){
-        var link = document.getElementById("summaryLink").value;
+        let link = document.getElementById("summaryLink").value;
         window.open(link, '_blank');
     }
 

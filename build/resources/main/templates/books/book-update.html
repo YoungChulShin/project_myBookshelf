@@ -70,8 +70,10 @@
             </div>
             <br>
             <button type="submit" class="btn btn-primary btn-block">수정</button>
-            <a href="#" th:href="'javascript:cancel('+${updateForm.id}+')'" role="button" class="btn btn-danger btn-block">삭제</a>
+
         </form>
+        <br>
+        <button type="button" class="btn btn-danger btn-block" onclick="cancel();">삭제</button>
     </div>
 
     <div th:replace="layouts/footer :: footer" />
@@ -129,16 +131,19 @@
         });//datepicker end
     });//ready end
 
-    function cancel(id) {
-        var form = document.createElement("form");
-        form.setAttribute("method", "post");
-        form.setAttribute("action", "/api/v1/books/" + id + "/delete");
-        document.body.appendChild(form);
-        form.submit();
+    function cancel() {
+
+        alert(${updateForm.id});
+
+        // let form = document.createElement("form");
+        // form.setAttribute("method", "post");
+        // form.setAttribute("action", "/api/v1/books/" + id + "/delete");
+        // document.body.appendChild(form);
+        // form.submit();
     }
 
     function getSummaryLinkValue(){
-        var link = document.getElementById("summaryLink").value;
+        let link = document.getElementById("summaryLink").value;
         window.open(link, '_blank');
     }
 
