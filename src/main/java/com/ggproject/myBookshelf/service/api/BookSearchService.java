@@ -27,7 +27,7 @@ public class BookSearchService {
 
     public BookSearchResponseDto getBookInformations(String searchItem) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(searchApiUrl)
-                .queryParam("query", "스프링");
+                .queryParam("query", searchItem);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);

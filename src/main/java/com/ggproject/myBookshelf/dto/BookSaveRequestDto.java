@@ -1,6 +1,5 @@
 package com.ggproject.myBookshelf.dto;
 
-import com.ggproject.myBookshelf.domain.ReadStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

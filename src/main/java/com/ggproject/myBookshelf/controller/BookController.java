@@ -88,30 +88,24 @@ public class BookController {
         model.addAttribute("searchKeyword", searchKeyword);
         model.addAttribute("searchResult", bookInformations.getDocuments());
 
-        //return "books/book-search-save";
-        return "books/book-list-planned";
+        return "books/book-search-save";
     }
 
+    @ResponseBody
     @PostMapping("/api/v1/books/new")
-    public String create(@Valid BookSaveRequestDto form, BindingResult result, Model model) {
-
-        if (result.hasErrors()) {
-            model.addAttribute("saveForm", form);
-            return "books/book-search-save";
-        }
+    public Long create(@RequestBody BookSaveRequestDto bookSaveRequest,  Model model) {
 
         SessionUser sessionUser = (SessionUser)httpSession.getAttribute("user");
-        bookService.save(sessionUser.getId(), form);
-
-        return "redirect:/";
+        return bookService.save(sessionUser.getId(), bookSaveRequest);
     }
 
     @GetMapping("/api/v1/books/{bookId}/update")
-    public String updateForm(@PathVariable("bookId") Long bookId, Model model) {
+    public String updateForm(@PathVariable("bookId") Long bookId, Model model, @LoginUser SessionUser user) {
 
         Book findBook = bookService.findOne(bookId);
         BookUpdateRequestDto updateDto = new BookUpdateRequestDto(findBook);
 
+        model.addAttribute("userName", user.getName());
         model.addAttribute("updateForm", updateDto);
 
         return "books/book-update";
