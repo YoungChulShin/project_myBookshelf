@@ -99,7 +99,6 @@
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            alert('책이 등록되었습니다');
             window.location.href = '/api/v1/books/plannedList';
         }).fail(function (error) {
             alert(JSON.stringify(error));

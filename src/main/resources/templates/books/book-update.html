@@ -14,19 +14,19 @@
         <div class="form-row">
             <label class="col-sm-2 col-form-label">제목</label>
             <div class="form-group col-md-10">
-                <input id="bookNameInput" type="text" class="form-control" th:field="${updateForm.name}"/>
+                <input id="bookNameInput" type="text" class="form-control" th:value="${updateForm.name}" readonly="readonly"/>
             </div>
         </div>
         <div class="form-row">
             <label class="col-sm-2 col-form-label">저자</label>
             <div class="form-group col-md-10">
-                <input id="authorInput" type="text" class="form-control" th:field="${updateForm.author}"/>
+                <input id="authorInput" type="text" class="form-control" th:value="${updateForm.author}" readonly="readonly"/>
             </div>
         </div>
         <div class="form-row">
             <label class="col-sm-2 col-form-label">ISBN</label>
             <div class="form-group col-md-10">
-                <input id="isbnInput" type="text" class="form-control" th:field="${updateForm.isbn}"/>
+                <input id="isbnInput" type="text" class="form-control" th:value="${updateForm.isbn}" readonly="readonly"/>
             </div>
         </div>
         <div class="form-row">
@@ -41,19 +41,19 @@
         <div class="form-row">
             <label class="col-sm-2 col-form-label">독서 기간</label>
             <div class="form-group col-md-4">
-                <input type="text" id="readStartInput" class="form-control" th:field="${updateForm.readStartString}">
+                <input type="text" id="readStartInput" class="form-control" th:value="${#temporals.format(updateForm.readStart, 'yyyy-MM-dd')}" readonly="readonly">
             </div>
             <div class="form-group col-md-2 text-center">
                 <label class="col-sm-2 col-form-label">~</label>
             </div>
             <div class="form-group col-md-4">
-                <input type="text" id="readEndInput" class="form-control" th:field="${updateForm.readEndString}">
+                <input type="text" id="readEndInput" class="form-control" th:value="${#temporals.format(updateForm.readEnd, 'yyyy-MM-dd')}" readonly="readonly">
             </div>
         </div>
         <div class="form-row">
             <label class="col-sm-2 col-form-label">정리 Link</label>
             <div class="form-group col-md-8">
-                <input type="text" id="summaryLinkInput" class="form-control" th:field="${updateForm.summaryLink}"/>
+                <input type="text" id="summaryLinkInput" class="form-control" th:value="${updateForm.summaryLink}"/>
             </div>
             <div class="form-group col-md-2">
                 <button type="button" class="btn btn-warning btn-block" onclick="getSummaryLinkValue();">이동</button>
@@ -62,12 +62,13 @@
         <div class="form-row">
             <label class="col-sm-2 col-form-label">한줄 메모</label>
             <div class="form-group col-md-10">
-                <input id="memoInput" type="text" class="form-control" th:field="${updateForm.memo}"/>
+                <input id="memoInput" type="text" class="form-control" th:value="${updateForm.memo}"/>
             </div>
         </div>
         <br>
-        <button type="submit" class="btn btn-primary btn-block">수정</button>
+        <button type="button" class="btn btn-primary btn-block" th:onclick="'updateBook(' + ${updateForm.id} + ')'">수정</button>
         <button type="button" class="btn btn-danger btn-block" th:onclick="'deleteBook(' + ${updateForm.id} + ')'">삭제</button>
+        <button type="button" class="btn btn-light btn-block" th:onclick="moveBack()">뒤로</button>
     </div>
 
     <div th:replace="layouts/footer :: footer" />
@@ -137,6 +138,66 @@
     
     function updateBook(id) {
 
+        // variables
+        let readStartDate = (document.getElementById("readStartInput") != null) ? document.getElementById("readStartInput").value : null;
+        let readEndDate = (document.getElementById("readEndInput") != null) ? document.getElementById("readEndInput").value : null;
+
+        const data = {
+            id: id,
+            name: document.getElementById("bookNameInput").value,
+            isbn: document.getElementById("isbnInput").value,
+            author: document.getElementById("authorInput").value,
+            readStatus: document.getElementById("readStatusInput").value,
+            readStartString: (readStartDate != null) ? readStartDate + ' 00:00:00' : '',
+            readEndString: (readEndDate != null) ? readEndDate + ' 00:00:00' : '',
+            summaryLink: document.getElementById("summaryLinkInput").value,
+            memo: document.getElementById("memoInput").value
+        };
+
+        console.log(data);
+
+        // check validation
+        if (data.readStatus == "PLANNED") {
+
+            if (readStartDate == null && readEndDate != null) {
+                alert('올바른 독서 기간을 선택해주세요');
+                return;
+            }
+        } else if (data.readStatus == "READING") {
+
+            if (readStartDate == null) {
+                alert('독서 시작 기간을 선택해주세요');
+                return;
+            }
+        } else if (data.readStatus == "COMPLETED") {
+
+            if (readStartDate == null) {
+                alert('독서 시작 기간을 선택해주세요');
+                return;
+            }
+
+            if (readEndDate == null) {
+                alert('독서 완료 기간을 선택해주세요');
+                return;
+            }
+        }
+
+        // execute update
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/books/' + id + '/update',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function () {
+            window.history.back();
+        }).fail(function(error) {
+            alert(JSON.stringify(error));
+        });
+    }
+
+    function moveBack() {
+        window.history.back();
     }
 
     function getSummaryLinkValue(){
