@@ -1,15 +1,16 @@
 package com.ggproject.myBookshelf.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ggproject.myBookshelf.domain.Book;
 import com.ggproject.myBookshelf.domain.ReadStatus;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
+@NoArgsConstructor
 @Getter @Setter
 public class BookUpdateRequestDto {
 
@@ -23,14 +24,13 @@ public class BookUpdateRequestDto {
     private ReadStatus prevReadStatus;
 
     private ReadStatus readStatus;
-    private LocalDate readStart;
+
+    private LocalDateTime readStart;
+    private LocalDateTime readEnd;
     private String readStartString;
-    private LocalDate readEnd;
     private String readEndString;
     private String summaryLink;
     private String memo;
-
-    public BookUpdateRequestDto() {}
 
     public BookUpdateRequestDto(Book book) {
         this.id = book.getId();
@@ -40,13 +40,7 @@ public class BookUpdateRequestDto {
         this.prevReadStatus = book.getReadStatus();
         this.readStatus = book.getReadStatus();
         this.readStart = book.getReadStart();
-        if (this.readStart != null) {
-            readStartString = this.readStart.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        }
         this.readEnd = book.getReadEnd();
-        if (this.readEnd != null) {
-            readEndString = this.readEnd.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        }
         this.summaryLink = book.getSummaryLink();
         this.memo = book.getMemo();
     }

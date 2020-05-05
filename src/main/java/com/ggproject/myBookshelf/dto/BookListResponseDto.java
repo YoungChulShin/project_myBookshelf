@@ -4,6 +4,7 @@ import com.ggproject.myBookshelf.domain.Book;
 import com.ggproject.myBookshelf.domain.ReadStatus;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,13 +19,10 @@ public class BookListResponseDto {
     private String isbn;
     private String author;
     private ReadStatus readStatus;
-    private LocalDate readStart;
-    private LocalDate readEnd;
+    private LocalDateTime readStart;
+    private LocalDateTime readEnd;
     private String memo;
-
-    private String readStartText = "";
-    private String readEndText = "";
-    private String cratedDateText = "";
+    private LocalDateTime createdDate;
 
     public BookListResponseDto(Book entity) {
         this.id = entity.getId();
@@ -34,15 +32,6 @@ public class BookListResponseDto {
         this.readStatus = entity.getReadStatus();
         this.readStart = entity.getReadStart();
         this.readEnd = entity.getReadEnd();
-
-        if (entity.getCreatedDate() != null) {
-            this.cratedDateText = entity.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        }
-        if (this.readStart != null) {
-            this.readStartText = this.readStart.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        }
-        if (this.readEnd != null) {
-            this.readEndText = this.readEnd.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        }
+        this.createdDate = entity.getCreatedDate();
     }
 }

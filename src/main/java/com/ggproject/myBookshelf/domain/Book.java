@@ -3,7 +3,7 @@ package com.ggproject.myBookshelf.domain;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -27,9 +27,9 @@ public class Book extends BaseTimeEntity{
     @Enumerated(EnumType.STRING)
     private ReadStatus readStatus;
 
-    private LocalDate readStart;
+    private LocalDateTime readStart;
 
-    private LocalDate readEnd;
+    private LocalDateTime readEnd;
 
     private String summaryLink;
 
@@ -46,7 +46,7 @@ public class Book extends BaseTimeEntity{
         return book;
     }
 
-    public void update(ReadStatus readStatus, LocalDate readStart, LocalDate readEnd,
+    public void update(ReadStatus readStatus, LocalDateTime readStart, LocalDateTime readEnd,
                        String summaryLink, String memo) {
         this.readStatus = readStatus;
         this.readStart = readStart;
