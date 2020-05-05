@@ -141,8 +141,8 @@
     function updateBook(id) {
 
         // variables
-        let readStartDate = (document.getElementById("readStartInput") != null) ? document.getElementById("readStartInput").value : null;
-        let readEndDate = (document.getElementById("readEndInput") != null) ? document.getElementById("readEndInput").value : null;
+        let readStartDate = (document.getElementById("readStartInput") != null) ? document.getElementById("readStartInput").value : "";
+        let readEndDate = (document.getElementById("readEndInput") != null) ? document.getElementById("readEndInput").value : "";
 
         const data = {
             id: id,
@@ -150,8 +150,8 @@
             isbn: document.getElementById("isbnInput").value,
             author: document.getElementById("authorInput").value,
             readStatus: document.getElementById("readStatusInput").value,
-            readStartString: (readStartDate != null) ? readStartDate + ' 00:00:00' : '',
-            readEndString: (readEndDate != null) ? readEndDate + ' 00:00:00' : '',
+            readStartString: (readStartDate != "") ? readStartDate + ' 00:00:00' : '',
+            readEndString: (readEndDate != "") ? readEndDate + ' 00:00:00' : '',
             summaryLink: document.getElementById("summaryLinkInput").value,
             memo: document.getElementById("memoInput").value
         };
@@ -161,24 +161,24 @@
         // check validation
         if (data.readStatus == "PLANNED") {
 
-            if (readStartDate == null && readEndDate != null) {
+            if (readStartDate == "" && readEndDate != "") {
                 alert('올바른 독서 기간을 선택해주세요');
                 return;
             }
         } else if (data.readStatus == "READING") {
 
-            if (readStartDate == null) {
+            if (readStartDate == "") {
                 alert('독서 시작 기간을 선택해주세요');
                 return;
             }
         } else if (data.readStatus == "COMPLETED") {
 
-            if (readStartDate == null) {
+            if (readStartDate == "") {
                 alert('독서 시작 기간을 선택해주세요');
                 return;
             }
 
-            if (readEndDate == null) {
+            if (readEndDate == "") {
                 alert('독서 완료 기간을 선택해주세요');
                 return;
             }
