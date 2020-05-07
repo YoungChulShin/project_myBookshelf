@@ -45,6 +45,17 @@ public class BookController {
         return "books/book-list-planned";
     }
 
+    @GetMapping("/api/v1/books/list")
+    public String books(Model model, @LoginUser SessionUser user) {
+
+        List<BookListResponseDto> bookList = bookService.findBooks(user.getId(), ReadStatus.PLANNED);
+
+        model.addAttribute("books", bookList);
+        model.addAttribute("userName", user.getName());
+
+        return "books/book-list";
+    }
+
     @GetMapping("/api/v1/books/completedList")
     public String booksCompleted(Model model, @LoginUser SessionUser user) {
 
