@@ -52,6 +52,7 @@ public class BookController {
 
         model.addAttribute("books", bookList);
         model.addAttribute("userName", user.getName());
+        model.addAttribute("userPicture", user.getPicture());
 
         return "books/book-list";
     }
