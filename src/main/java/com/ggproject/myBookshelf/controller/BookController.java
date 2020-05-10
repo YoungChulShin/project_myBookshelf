@@ -30,6 +30,7 @@ public class BookController {
 
         model.addAttribute("books", bookList);
         model.addAttribute("userName", user.getName());
+        model.addAttribute("userPicture", user.getPicture());
 
         return "books/book-list-reading";
     }
@@ -41,6 +42,7 @@ public class BookController {
 
         model.addAttribute("books", bookList);
         model.addAttribute("userName", user.getName());
+        model.addAttribute("userPicture", user.getPicture());
 
         return "books/book-list-planned";
     }
@@ -64,6 +66,7 @@ public class BookController {
 
         model.addAttribute("books", bookList);
         model.addAttribute("userName", user.getName());
+        model.addAttribute("userPicture", user.getPicture());
 
         return "books/book-list-completed";
     }

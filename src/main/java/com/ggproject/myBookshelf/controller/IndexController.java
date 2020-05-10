@@ -18,7 +18,7 @@ public class IndexController {
     public String index(@LoginUser SessionUser loginUser) {
 
         if (loginUser != null) {
-            return "redirect:/api/v1/books/list";
+            return "redirect:/api/v1/books/plannedList";
         } else {
             return "index";
         }
