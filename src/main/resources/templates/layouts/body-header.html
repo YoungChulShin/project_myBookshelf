@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div class="row justify-content-between align-items-center m-4" th:fragment="bodyHeader">
 
-    <!--사용자 정보-->
-    <a href="#" th:text="${userName} + ' 님의 서재'"></a>
+<nav class="navbar navbar-dark bg-dark" th:fragment="bodyHeader">
+    <a class="navbar-brand" href="/api/v1/books/plannedList">
+        <img th:src="${userPicture}" width="30" height="30" class="profile-image d-inline-block align-content-center" alt=""
+             style="border-radius: 50%; margin-right: 10px">
+        <span th:text="${userName} + ' 님의 서재'" style="font-size: small"></span>
+    </a>
 
-    <!--로그아웃-->
-    <a href="/logout">로그아웃</a>
+    <a href="/logout" style="font-size: small; color: white" >로그아웃</a>
+</nav>
 
-</div>
 </html>

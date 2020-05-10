@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layouts/header :: header">
+</head>
+
+<body>
+
+    <div th:replace="layouts/body-header :: bodyHeader" />
+
+    <div class="container">
+        <ul class="nav nav-pills nav-fill">
+            <li class="nav-item">
+                <a th:if="${readStatus} == 'PLANNED'" class="nav-link active" href="/api/v1/books/plannedList">읽을 예정</a>
+                <a th:unless="${readStatus} == 'PLANNED'" class="nav-link" href="/api/v1/books/plannedList">읽을 예정</a>
+            </li>
+            <li class="nav-item">
+                <a th:if="${readStatus} == 'READING'" class="nav-link active" href="/api/v1/books/readingList">읽는 중</a>
+                <a th:unless="${readStatus} == 'READING'" class="nav-link" href="/api/v1/books/readingList">읽는 중</a>
+            </li>
+            <li class="nav-item">
+                <a th:if="${readStatus} == 'COMPLETED'" class="nav-link active" href="/api/v1/books/completedList">읽은</a>
+                <a th:unless="${readStatus} == 'COMPLETED'" class="nav-link" href="/api/v1/books/completedList">읽은</a>
+            </li>
+        </ul>
+
+    </div>
+
+    <div th:replace="layouts/footer :: footer" />
+
+</body>
+</html>

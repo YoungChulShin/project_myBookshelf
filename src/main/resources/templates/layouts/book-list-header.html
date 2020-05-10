@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <div class="row justify-content-between align-items-center m-2" th:fragment="bookListHeader">
 
     <!--메뉴-->
     <ul class="nav nav-pills nav-fill">
         <li class="nav-item">
-            <a th:if="${readStatus} == 'PLANNED'" class="nav-link active" href="/api/v1/books/plannedList">읽을 예정</a>
-            <a th:unless="${readStatus} == 'PLANNED'" class="nav-link" href="/api/v1/books/plannedList">읽을 예정</a>
+            <a th:if="${readStatus} == 'PLANNED'" class="active-nav-btn nav-link active btn-dark" href="/api/v1/books/plannedList"
+               >읽을 예정</a>
+            <a th:unless="${readStatus} == 'PLANNED'" class="nav-link" href="/api/v1/books/plannedList" style="color: black">읽을 예정</a>
         </li>
         <li class="nav-item">
-            <a th:if="${readStatus} == 'READING'" class="nav-link active" href="/api/v1/books/readingList">읽는 중</a>
-            <a th:unless="${readStatus} == 'READING'" class="nav-link" href="/api/v1/books/readingList">읽는 중</a>
+            <a th:if="${readStatus} == 'READING'" class="nav-link active active-nav-btn btn-dark" href="/api/v1/books/readingList">읽는 중</a>
+            <a th:unless="${readStatus} == 'READING'" class="nav-link" href="/api/v1/books/readingList" style="color: black">읽는 중</a>
         </li>
         <li class="nav-item">
-            <a th:if="${readStatus} == 'COMPLETED'" class="nav-link active" href="/api/v1/books/completedList">읽은</a>
-            <a th:unless="${readStatus} == 'COMPLETED'" class="nav-link" href="/api/v1/books/completedList">읽은</a>
+            <a th:if="${readStatus} == 'COMPLETED'" class="nav-link active active-nav-btn btn-dark" href="/api/v1/books/completedList"
+               style="background: black">읽은</a>
+            <a th:unless="${readStatus} == 'COMPLETED'" class="nav-link" href="/api/v1/books/completedList" style="color: black">읽은</a>
         </li>
     </ul>
 
     <!--책추가-->
-    <a th:if="${readStatus} == 'PLANNED'" href="/api/v1/books/new" class="btn btn-info">책 추가</a>
+    <a th:if="${readStatus} == 'PLANNED'" href="/api/v1/books/new" class="btn btn-warning btn-sm">책 추가</a>
 </div>
 </html>

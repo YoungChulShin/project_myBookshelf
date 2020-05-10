@@ -3,80 +3,89 @@
 
 <head th:replace="layouts/header :: header" />
 
-<body>
-<div class="container">
+<style>
+    .content {
+        font-size: small;
+    }
+    .form-control, .custom-select {
+        font-size: small;
+    }
+</style>
 
+<body>
+<div class="content">
     <div th:replace="layouts/body-header :: bodyHeader" />
 
-    <div class="col-md-12">
-        <h5 th:text="${updateForm.name}"></h5>
+    <div class="container">
+        <div class="col-md-12">
+            <br>
+            <div th:text="${updateForm.name}" style="font-size: medium"></div>
+            <br>
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label">제목</label>
+                <div class="form-group col-md-10">
+                    <input id="bookNameInput" type="text" class="form-control" th:value="${updateForm.name}" readonly="readonly"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label">저자</label>
+                <div class="form-group col-md-10">
+                    <input id="authorInput" type="text" class="form-control" th:value="${updateForm.author}" readonly="readonly"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label">ISBN</label>
+                <div class="form-group col-md-10">
+                    <input id="isbnInput" type="text" class="form-control" th:value="${updateForm.isbn}" readonly="readonly"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label">독서 상태</label>
+                <div class="form-group col-md-10">
+                    <select id="readStatusInput" th:field="${updateForm.readStatus}" class="custom-select">
+                        <option th:each="readStatus : ${T(com.ggproject.myBookshelf.domain.ReadStatus).values()}"
+                                th:value="${readStatus}" th:text="${readStatus.displayValue}"/>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label">독서 기간</label>
+                <div class="form-group col-md-4">
+                    <input type="text" id="readStartInput" class="form-control" th:value="${#temporals.format(updateForm.readStart, 'yyyy-MM-dd')}" readonly="readonly">
+                </div>
+                <div class="form-group col-md-2 text-center">
+                    <label class="col-sm-2 col-form-label">~</label>
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" id="readEndInput" class="form-control" th:value="${#temporals.format(updateForm.readEnd, 'yyyy-MM-dd')}" readonly="readonly">
+                </div>
+            </div>
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label">정리 Link</label>
+                <div class="form-group col-md-8">
+                    <input type="text" id="summaryLinkInput" class="form-control" th:value="${updateForm.summaryLink}"/>
+                </div>
+                <div class="form-group col-md-2">
+                    <button type="button" class="btn btn-info btn-block btn-sm" onclick="getSummaryLinkValue();">이동</button>
+                </div>
+            </div>
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label">한줄 메모</label>
+                <div class="form-group col-md-10">
+                    <input id="memoInput" type="text" class="form-control" th:value="${updateForm.memo}"/>
+                </div>
+            </div>
+            <br>
+            <button type="button" class="btn btn-primary btn-block btn-sm" th:onclick="'updateBook(' + ${updateForm.id} + ')'">수정</button>
+            <button type="button" class="btn btn-secondary btn-block btn-sm" th:onclick="moveBack()">돌아가기</button>
+            <button type="button" class="btn btn-danger btn-block btn-sm" th:onclick="'deleteBook(' + ${updateForm.id} + ')'">삭제</button>
+        </div>
+
         <br>
-        <div class="form-row">
-            <label class="col-sm-2 col-form-label">제목</label>
-            <div class="form-group col-md-10">
-                <input id="bookNameInput" type="text" class="form-control" th:value="${updateForm.name}" readonly="readonly"/>
-            </div>
-        </div>
-        <div class="form-row">
-            <label class="col-sm-2 col-form-label">저자</label>
-            <div class="form-group col-md-10">
-                <input id="authorInput" type="text" class="form-control" th:value="${updateForm.author}" readonly="readonly"/>
-            </div>
-        </div>
-        <div class="form-row">
-            <label class="col-sm-2 col-form-label">ISBN</label>
-            <div class="form-group col-md-10">
-                <input id="isbnInput" type="text" class="form-control" th:value="${updateForm.isbn}" readonly="readonly"/>
-            </div>
-        </div>
-        <div class="form-row">
-            <label class="col-sm-2 col-form-label">독서 상태</label>
-            <div class="form-group col-md-10">
-                <select id="readStatusInput" th:field="${updateForm.readStatus}" class="custom-select">
-                    <option th:each="readStatus : ${T(com.ggproject.myBookshelf.domain.ReadStatus).values()}"
-                            th:value="${readStatus}" th:text="${readStatus.displayValue}"/>
-                </select>
-            </div>
-        </div>
-        <div class="form-row">
-            <label class="col-sm-2 col-form-label">독서 기간</label>
-            <div class="form-group col-md-4">
-                <input type="text" id="readStartInput" class="form-control" th:value="${#temporals.format(updateForm.readStart, 'yyyy-MM-dd')}" readonly="readonly">
-            </div>
-            <div class="form-group col-md-2 text-center">
-                <label class="col-sm-2 col-form-label">~</label>
-            </div>
-            <div class="form-group col-md-4">
-                <input type="text" id="readEndInput" class="form-control" th:value="${#temporals.format(updateForm.readEnd, 'yyyy-MM-dd')}" readonly="readonly">
-            </div>
-        </div>
-        <div class="form-row">
-            <label class="col-sm-2 col-form-label">정리 Link</label>
-            <div class="form-group col-md-8">
-                <input type="text" id="summaryLinkInput" class="form-control" th:value="${updateForm.summaryLink}"/>
-            </div>
-            <div class="form-group col-md-2">
-                <button type="button" class="btn btn-warning btn-block" onclick="getSummaryLinkValue();">이동</button>
-            </div>
-        </div>
-        <div class="form-row">
-            <label class="col-sm-2 col-form-label">한줄 메모</label>
-            <div class="form-group col-md-10">
-                <input id="memoInput" type="text" class="form-control" th:value="${updateForm.memo}"/>
-            </div>
-        </div>
-        <br>
-        <button type="button" class="btn btn-primary btn-block" th:onclick="'updateBook(' + ${updateForm.id} + ')'">수정</button>
-        <button type="button" class="btn btn-danger btn-block" th:onclick="'deleteBook(' + ${updateForm.id} + ')'">삭제</button>
-        <button type="button" class="btn btn-light btn-block" th:onclick="moveBack()">돌아가기</button>
     </div>
 
-    <br>
-
     <div th:replace="layouts/footer :: footer" />
-
 </div>
-
 </body>
 <script>
     $(function() {

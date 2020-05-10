@@ -30,6 +30,7 @@ public class BookController {
 
         model.addAttribute("books", bookList);
         model.addAttribute("userName", user.getName());
+        model.addAttribute("userPicture", user.getPicture());
 
         return "books/book-list-reading";
     }
@@ -41,8 +42,21 @@ public class BookController {
 
         model.addAttribute("books", bookList);
         model.addAttribute("userName", user.getName());
+        model.addAttribute("userPicture", user.getPicture());
 
         return "books/book-list-planned";
+    }
+
+    @GetMapping("/api/v1/books/list")
+    public String books(Model model, @LoginUser SessionUser user) {
+
+        List<BookListResponseDto> bookList = bookService.findBooks(user.getId(), ReadStatus.PLANNED);
+
+        model.addAttribute("books", bookList);
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("userPicture", user.getPicture());
+
+        return "books/book-list";
     }
 
     @GetMapping("/api/v1/books/completedList")
@@ -52,6 +66,7 @@ public class BookController {
 
         model.addAttribute("books", bookList);
         model.addAttribute("userName", user.getName());
+        model.addAttribute("userPicture", user.getPicture());
 
         return "books/book-list-completed";
     }
@@ -78,6 +93,7 @@ public class BookController {
         BookSearchResponseDto bookInformations = bookSearchService.getBookInformations(searchKeyword);
 
         model.addAttribute("userName", user.getName());
+        model.addAttribute("userPicture", user.getPicture());
         model.addAttribute("searchKeyword", searchKeyword);
         model.addAttribute("searchResult", bookInformations.getDocuments());
 
@@ -91,6 +107,7 @@ public class BookController {
         BookUpdateRequestDto updateDto = new BookUpdateRequestDto(findBook);
 
         model.addAttribute("userName", user.getName());
+        model.addAttribute("userPicture", user.getPicture());
         model.addAttribute("updateForm", updateDto);
 
         return "books/book-update";
