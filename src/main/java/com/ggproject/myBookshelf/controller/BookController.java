@@ -93,6 +93,7 @@ public class BookController {
         BookSearchResponseDto bookInformations = bookSearchService.getBookInformations(searchKeyword);
 
         model.addAttribute("userName", user.getName());
+        model.addAttribute("userPicture", user.getPicture());
         model.addAttribute("searchKeyword", searchKeyword);
         model.addAttribute("searchResult", bookInformations.getDocuments());
 
@@ -106,6 +107,7 @@ public class BookController {
         BookUpdateRequestDto updateDto = new BookUpdateRequestDto(findBook);
 
         model.addAttribute("userName", user.getName());
+        model.addAttribute("userPicture", user.getPicture());
         model.addAttribute("updateForm", updateDto);
 
         return "books/book-update";
