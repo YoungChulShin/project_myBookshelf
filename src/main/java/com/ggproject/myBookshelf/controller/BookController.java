@@ -75,14 +75,18 @@ public class BookController {
     public String createForm(Model model, @LoginUser SessionUser user) {
 
         model.addAttribute("userName", user.getName());
+        model.addAttribute("userPicture", user.getPicture());
         model.addAttribute("searchKeyword", "");
         model.addAttribute("searchResult", new BookSearchResponseDto().getDocuments());
+        model.addAttribute("searchMeta", new BookSearchResponseDto().getMeta());
+        model.addAttribute("searchPage", 1);
 
         return "books/book-search-save";
     }
 
-    @GetMapping("/api/v1/books/new/{searchKeyword}")
+    @GetMapping("/api/v1/books/new/{searchKeyword}/{searchPage}")
     public String createForm(@PathVariable("searchKeyword") String searchKeyword,
+                             @PathVariable("searchPage") int searchPage,
                              Model model,
                              @LoginUser SessionUser user) {
 
@@ -90,12 +94,14 @@ public class BookController {
             return  "redirect:/api/v1/books/new";
         }
 
-        BookSearchResponseDto bookInformations = bookSearchService.getBookInformations(searchKeyword);
+        BookSearchResponseDto bookInformations = bookSearchService.getBookInformations(searchKeyword, searchPage);
 
         model.addAttribute("userName", user.getName());
         model.addAttribute("userPicture", user.getPicture());
         model.addAttribute("searchKeyword", searchKeyword);
         model.addAttribute("searchResult", bookInformations.getDocuments());
+        model.addAttribute("searchMeta", bookInformations.getMeta());
+        model.addAttribute("searchPage", searchPage);
 
         return "books/book-search-save";
     }

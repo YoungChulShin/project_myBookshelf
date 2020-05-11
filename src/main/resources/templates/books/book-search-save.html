@@ -22,7 +22,7 @@
 
             <div class="input-group">
                 <input id="search-keyword" type="text" class="form-control" placeholder="제목 또는 저자를 입력해주세요" style="font-size: small">
-                <button id="btn-search-book" class="btn btn-warning btn-sm" type="button" onclick="searchBook()" style="margin:0 0 0 10px">검색</button>
+                <button id="btn-search-book" class="btn btn-warning btn-sm" type="button" onclick="searchBook(1)" style="margin:0 0 0 10px">검색</button>
             </div>
             <br>
 
@@ -58,6 +58,27 @@
 
             </table>
 
+<!--            <nav th:if="${searchMeta != null}" aria-label="Page navigation" style="text-align:center">-->
+<!--                <ul class="pagination"-->
+<!--                    th:with="startNumber=${searchPage},endNumber=(${T(Math).floor(searchMeta.pageableCount/10)} > ${startNumber}+9) ? ${startNumber} + 9 : ${T(Math).floor(searchMeta.pageableCount/10)}">-->
+<!--                    <li th:each="page : ${#numbers.sequence(startNumber, endNumber)}" class="page-item">-->
+<!--                        <a th:href="@{/board/list(page=${page})}" th:text="${page}">-->
+<!--                            <span class="sr-only"></span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </nav>-->
+
+            <nav th:if="${searchMeta != null}" aria-label="Page navigation">
+                <ul class="pagination justify-content-center"
+                    th:with="startNumber=${searchPage},endNumber=(${T(Math).floor(searchMeta.pageableCount/10)} > ${startNumber}+9) ? ${startNumber} + 9 : ${T(Math).floor(searchMeta.pageableCount/10)}">
+                    <li class="page-item" th:each="page : ${#numbers.sequence(startNumber, endNumber)}" >
+<!--                        <a class="page-link" th:href="@{/board/list(page=${page})}" th:text="${page}"></a>-->
+                        <button class="page-link" th:text="${page}"></button>
+                    </li>
+                </ul>
+            </nav>
+
             <br>
             <a href="/" role="button" class="btn btn-secondary btn-block btn-sm">돌아가기</a>
         </div>
@@ -68,7 +89,7 @@
 </body>
 
 <script>
-    function searchBook() {
+    function searchBook(pageNumber) {
         let searchKeyword = document.getElementById("search-keyword").value;
 
         if (searchKeyword == "") {
@@ -76,9 +97,26 @@
             return;
         }
 
+        alert('1: ' + searchKeyword);
+        alert('2: ' + pageNumber);
+
+        searchBook(searchKeyword, pageNumber);
+
+        // let form = document.createElement("form");
+        // form.setAttribute("method", "get");
+        // form.setAttribute("action", "/api/v1/books/new/" + searchKeyword + '/' + pageNumber);
+        // document.body.appendChild(form);
+        // form.submit();
+    }
+
+    function searchBook(searchKeyword, pageNumber) {
+
+        alert('3: ' + searchKeyword);
+        alert('4: ' + pageNumber);
+
         let form = document.createElement("form");
         form.setAttribute("method", "get");
-        form.setAttribute("action", "/api/v1/books/new/" + searchKeyword);
+        form.setAttribute("action", "/api/v1/books/new/" + searchKeyword + '/' + pageNumber);
         document.body.appendChild(form);
         form.submit();
     }

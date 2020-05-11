@@ -25,9 +25,11 @@ public class BookSearchService {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    public BookSearchResponseDto getBookInformations(String searchItem) {
+    public BookSearchResponseDto getBookInformations(String searchItem, int pageNumber) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(searchApiUrl)
-                .queryParam("query", searchItem);
+                .queryParam("query", searchItem)
+                .queryParam("size", 10)
+                .queryParam("page", pageNumber);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
