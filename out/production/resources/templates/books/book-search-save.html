@@ -55,8 +55,36 @@
                     </td>
                 </tr>
                 </tbody>
-
             </table>
+
+            <nav th:if="${searchMeta != null}" aria-label="Page navigation">
+                <ul class="pagination justify-content-center"
+                    th:with="startNumber=${T(Math).floor((searchPage-1)/10)}*10+1,
+                             endNumber=(${T(Math).floor(searchMeta.pageableCount/10)} > ${startNumber}+9) ? ${startNumber} + 9 : ${T(Math).floor(searchMeta.pageableCount/10)}">
+
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/api/v1/books/new/{searchKeyword}/1 (searchKeyword=${searchKeyword})}">&laquo;</a>
+                    </li>
+
+                    <li th:style="(${searchPage} == 1) ? 'display:none'">
+                        <a class="page-link" th:href="@{/api/v1/books/new/{searchKeyword}/{page} (searchKeyword=${searchKeyword},page=${searchPage-1})}">&lsaquo;</a>
+                    </li>
+
+                    <li th:each="page : ${#numbers.sequence(startNumber, endNumber)}"
+                        class="page-item"
+                        th:th:classappend="(${page} == ${searchPage}) ? active">
+                        <a class="page-link" th:href="@{/api/v1/books/new/{searchKeyword}/{page} (searchKeyword=${searchKeyword},page=${page})}" th:text="${page}"></a>
+                    </li>
+
+                    <li th:style="${isEnd} ? 'display:none'">
+                        <a class="page-link" th:href="@{/api/v1/books/new/{searchKeyword}/{page} (searchKeyword=${searchKeyword},page=${searchPage+1})}">&rsaquo;</a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/api/v1/books/new/{searchKeyword}/{page} (searchKeyword=${searchKeyword},page=${searchMeta.pageableCount/10})}">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
 
             <br>
             <a href="/" role="button" class="btn btn-secondary btn-block btn-sm">돌아가기</a>
@@ -68,6 +96,13 @@
 </body>
 
 <script>
+
+    document.getElementById('search-keyword').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            searchBook()
+        }
+    });
+
     function searchBook() {
         let searchKeyword = document.getElementById("search-keyword").value;
 
@@ -78,7 +113,7 @@
 
         let form = document.createElement("form");
         form.setAttribute("method", "get");
-        form.setAttribute("action", "/api/v1/books/new/" + searchKeyword);
+        form.setAttribute("action", "/api/v1/books/new/" + searchKeyword + '/1');
         document.body.appendChild(form);
         form.submit();
     }

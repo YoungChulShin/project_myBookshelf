@@ -15,4 +15,7 @@ public class BookSearchResponseDto {
 
     @JsonProperty("documents")
     private List<BookSearchDocumentDto> documents = new ArrayList<>();
+
+    @JsonProperty("meta")
+    private BookSearchMetaDto meta;
 }
