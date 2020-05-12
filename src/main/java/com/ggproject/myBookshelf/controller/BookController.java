@@ -80,6 +80,7 @@ public class BookController {
         model.addAttribute("searchResult", new BookSearchResponseDto().getDocuments());
         model.addAttribute("searchMeta", new BookSearchResponseDto().getMeta());
         model.addAttribute("searchPage", 1);
+        model.addAttribute("isEnd", false);
 
         return "books/book-search-save";
     }
@@ -102,6 +103,7 @@ public class BookController {
         model.addAttribute("searchResult", bookInformations.getDocuments());
         model.addAttribute("searchMeta", bookInformations.getMeta());
         model.addAttribute("searchPage", searchPage);
+        model.addAttribute("isEnd", bookInformations.getMeta().isEnd());
 
         return "books/book-search-save";
     }
