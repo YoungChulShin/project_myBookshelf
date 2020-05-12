@@ -59,10 +59,15 @@
 
             <nav th:if="${searchMeta != null}" aria-label="Page navigation">
                 <ul class="pagination justify-content-center"
+<<<<<<< HEAD
                     th:with="startNumber=${T(Math).floor((searchPage-1)/10)}*10+1,
                              endNumber=(${T(Math).floor(searchMeta.pageableCount/10)} > ${startNumber}+9) ? ${startNumber} + 9 : ${T(Math).floor(searchMeta.pageableCount/10)}">
                     <li class="active"
                         th:each="page : ${#numbers.sequence(startNumber, endNumber)}">
+=======
+                    th:with="startNumber=${searchPage},endNumber=(${T(Math).floor(searchMeta.pageableCount/10)} > ${startNumber}+9) ? ${startNumber} + 9 : ${T(Math).floor(searchMeta.pageableCount/10)}">
+                    <li class="page-item" th:each="page : ${#numbers.sequence(startNumber, endNumber)}" >
+>>>>>>> cafa26cc167787b88b49ba737414b9b803571753
                         <a class="page-link" th:href="@{/api/v1/books/new/{searchKeyword}/{page} (searchKeyword=${searchKeyword},page=${page})}" th:text="${page}"></a>
                     </li>
                 </ul>
@@ -93,6 +98,20 @@
         form.submit();
     }
 
+<<<<<<< HEAD
+=======
+    function searchBookWithPage(searchKeyword, pageNumber) {
+
+        alert(searchKeyword);
+        alert(pageNumber);
+        // let form = document.createElement("form");
+        // form.setAttribute("method", "get");
+        // form.setAttribute("action", "/api/v1/books/new/" + searchKeyword + '/' + pageNumber);
+        // document.body.appendChild(form);
+        // form.submit();
+    }
+
+>>>>>>> cafa26cc167787b88b49ba737414b9b803571753
     function createBook(id) {
         const data = {
             bookName: document.getElementById("titleId" + id).textContent.split(':')[1].trim(),
