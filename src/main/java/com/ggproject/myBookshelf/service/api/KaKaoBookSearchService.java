@@ -12,16 +12,17 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.http.HttpHeaders;
 
 @Service
-public class BookSearchService {
+public class KaKaoBookSearchService {
 
     private final RestTemplate restTemplate;
 
-    @Value("${api-property.booksearch.api-url}")
+    @Value("${api-property.kakao-book-search.api-url}")
     private String searchApiUrl;
-    @Value("${api-property.booksearch.api-key}")
-    private String searchApiKey ;
 
-    public BookSearchService(RestTemplateBuilder restTemplateBuilder) {
+    @Value("${api-property.kakao-book-search.api-key}")
+    private String searchApiKey;
+
+    public KaKaoBookSearchService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
     }
 

@@ -75,7 +75,19 @@
                     <input id="memoInput" type="text" class="form-control" th:value="${updateForm.memo}"/>
                 </div>
             </div>
+
+            <button class="btn btn-info btn-sm" style="margin-left: auto; margin-right: 10px;width: 8rem">책 정보</button>
+            <a class="btn btn-info btn-sm" data-toggle="collapse" role="button" href="#usedBookList"
+               aria-expanded="false" aria-controls="collapseExample" style="width: 8rem">알라딘 중고</a>
             <br>
+            <div class="collapse" id="usedBookList">
+                <br>
+                <div class="card card-body">
+                    
+                </div>
+            </div>
+            <br>
+
             <button type="button" class="btn btn-primary btn-block btn-sm" th:onclick="'updateBook(' + ${updateForm.id} + ')'">수정</button>
             <button type="button" class="btn btn-secondary btn-block btn-sm" th:onclick="moveBack()">돌아가기</button>
             <button type="button" class="btn btn-danger btn-block btn-sm" th:onclick="'deleteBook(' + ${updateForm.id} + ')'">삭제</button>
@@ -213,7 +225,10 @@
 
     function getSummaryLinkValue(){
         let link = document.getElementById("summaryLinkInput").value;
-        window.open(link, '_blank');
+
+        if (link != '') {
+            window.open(link, '_blank');
+        }
     }
 
 </script>
