@@ -167,6 +167,11 @@
     });//ready end
 
     function deleteBook(id) {
+
+        if (!confirm('삭제하시겠습니까?')) {
+            return;
+        }
+
         $.ajax({
             type: 'POST',
             url: '/api/v1/books/' + id + '/delete',
@@ -180,6 +185,10 @@
     }
     
     function updateBook(id) {
+
+        if (!confirm('수정하시겠습니까?')) {
+            return;
+        }
 
         // variables
         let readStartDate = (document.getElementById("readStartInput") != null) ? document.getElementById("readStartInput").value : "";
