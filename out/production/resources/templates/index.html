@@ -1,14 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layouts/header :: header">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-
-    <title>나의 서재</title>
-</head>
+<head th:replace="layouts/header :: header"/>
 
 <style>
     html,
@@ -25,13 +17,18 @@
         align-items: center;
         justify-content: center;
     }
+
+    p {
+        font-family: 'Do Hyeon', sans-serif;
+    }
+
 </style>
 
 <body>
     <div id="relative" class="container">
         <div style="margin-top: -100px">
-            <p class="cover-heading" style="margin-left: 8px">나의 서재</p>
-            <p><a href="/oauth2/authorization/google" class="btn btn-dark btn-sm">구글 로그인</a></p>
+            <p class="cover-heading" style="margin-left: 1px; font-size: large">소소한 서재</p>
+            <a href="/oauth2/authorization/google" class="btn btn-dark btn-sm">구글로그인</a>
         </div>
     </div>
 </body>
