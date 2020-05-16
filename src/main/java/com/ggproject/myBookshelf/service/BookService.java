@@ -32,7 +32,8 @@ public class BookService {
         Book book = Book.create(user,
                 requestDto.getBookName(),
                 requestDto.getIsbn(),
-                requestDto.getAuthor());
+                requestDto.getAuthor(),
+                requestDto.getInfoLink());
 
         Book createdBook = bookRepository.save(book);
 

@@ -1,6 +1,5 @@
 package com.ggproject.myBookshelf.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ggproject.myBookshelf.domain.Book;
 import com.ggproject.myBookshelf.domain.ReadStatus;
 import lombok.Getter;
@@ -31,6 +30,7 @@ public class BookUpdateRequestDto {
     private String readEndString;
     private String summaryLink;
     private String memo;
+    private String infoLink;
 
     public BookUpdateRequestDto(Book book) {
         this.id = book.getId();
@@ -43,5 +43,6 @@ public class BookUpdateRequestDto {
         this.readEnd = book.getReadEnd();
         this.summaryLink = book.getSummaryLink();
         this.memo = book.getMemo();
+        this.infoLink = book.getInfoLink();
     }
 }

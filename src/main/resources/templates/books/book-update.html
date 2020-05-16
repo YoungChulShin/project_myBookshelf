@@ -82,7 +82,8 @@
             <div class="form-row">
                 <label class="col-sm-2 col-form-label">기타 정보</label>
                 <div class="form-group col-md-10">
-                    <button class="btn btn-info btn-sm" style="margin-left: auto; margin-right: 10px;width: 8rem">책 정보</button>
+                    <a th:href="${updateForm.infoLink}" target="_blank" class="btn btn-info btn-sm"
+                       style="margin-left: auto; margin-right: 10px;width: 8rem">책 정보</a>
                     <a class="btn btn-info btn-sm" data-toggle="collapse" role="button" href="#usedBookList"
                        aria-expanded="false" aria-controls="collapseExample" style="width: 8rem;" th:text="'알라딘 중고 (' + ${#lists.size(usedBookList)} + ')'"></a>
                     <br>
