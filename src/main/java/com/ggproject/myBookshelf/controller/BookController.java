@@ -116,10 +116,12 @@ public class BookController {
 
         Book findBook = bookService.findOne(bookId);
         BookUpdateRequestDto updateDto = new BookUpdateRequestDto(findBook);
+        UsedBookSearchResponseDto usedBookList = aladinBookSerachService.getBookInformations(findBook.getIsbn());
 
         model.addAttribute("userName", user.getName());
         model.addAttribute("userPicture", user.getPicture());
         model.addAttribute("updateForm", updateDto);
+        model.addAttribute("usedBookList", usedBookList.getStoreList());
 
         return "books/book-update";
     }
