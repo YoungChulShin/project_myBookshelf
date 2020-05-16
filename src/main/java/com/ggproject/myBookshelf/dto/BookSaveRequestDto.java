@@ -16,4 +16,5 @@ public class BookSaveRequestDto {
     @NotEmpty(message = "ISBN은 필수 값입니다")
     private String isbn;
     private String author;
+    private String infoLink;
 }

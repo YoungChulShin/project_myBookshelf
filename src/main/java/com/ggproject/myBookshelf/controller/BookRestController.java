@@ -4,7 +4,7 @@ import com.ggproject.myBookshelf.config.auth.dto.SessionUser;
 import com.ggproject.myBookshelf.dto.BookSaveRequestDto;
 import com.ggproject.myBookshelf.dto.BookUpdateRequestDto;
 import com.ggproject.myBookshelf.service.BookService;
-import com.ggproject.myBookshelf.service.api.BookSearchService;
+import com.ggproject.myBookshelf.service.api.KaKaoBookSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class BookRestController {
 
     private final BookService bookService;
     private final HttpSession httpSession;
-    private final BookSearchService bookSearchService;
+    private final KaKaoBookSearchService kaKaoBookSearchService;
 
     @PostMapping("/api/v1/books/new")
     public Long create(@RequestBody BookSaveRequestDto bookSaveRequest, Model model) {

@@ -43,6 +43,7 @@
                             <dt th:id="'titleId' + ${i.index}" th:text="'제목 : ' + ${searchItem.title}" />
                             <dt th:id="'authorId' + ${i.index}" th:text="'저자 : ' + ${#strings.listJoin(searchItem.authors, ', ')}"/>
                             <dt th:id="'isbnId' + ${i.index}" th:text="'ISBN : ' + ${#strings.arraySplit(searchItem.isbn, ' ')[#lists.size(#strings.arraySplit(searchItem.isbn, ' ')) - 1]}"/>
+                            <dt th:id="'infoLink' + ${i.index}" th:text="${searchItem.url}" style="display: none"/>
                         </dl>
                     </td>
                     <td>
@@ -122,7 +123,8 @@
         const data = {
             bookName: document.getElementById("titleId" + id).textContent.split(':')[1].trim(),
             isbn: document.getElementById("isbnId" + id).textContent.split(':')[1].trim(),
-            author: document.getElementById("authorId" + id).textContent.split(':')[1].trim()
+            author: document.getElementById("authorId" + id).textContent.split(':')[1].trim(),
+            infoLink: document.getElementById("infoLink" + id).textContent.trim()
         }
 
         $.ajax({

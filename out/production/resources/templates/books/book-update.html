@@ -10,6 +10,9 @@
     .form-control, .custom-select {
         font-size: small;
     }
+    .btn-sm {
+        font-size: small;
+    }
 </style>
 
 <body>
@@ -66,7 +69,7 @@
                     <input type="text" id="summaryLinkInput" class="form-control" th:value="${updateForm.summaryLink}"/>
                 </div>
                 <div class="form-group col-md-2">
-                    <button type="button" class="btn btn-info btn-block btn-sm" onclick="getSummaryLinkValue();">이동</button>
+                    <button type="button" class="btn btn-info btn-block btn-sm" onclick="getSummaryLinkValue()">이동</button>
                 </div>
             </div>
             <div class="form-row">
@@ -75,7 +78,35 @@
                     <input id="memoInput" type="text" class="form-control" th:value="${updateForm.memo}"/>
                 </div>
             </div>
+
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label">기타 정보</label>
+                <div class="form-group col-md-10">
+                    <a th:href="${updateForm.infoLink}" target="_blank" class="btn btn-info btn-sm"
+                       style="margin-left: auto; margin-right: 10px;width: 8rem">책 정보</a>
+                    <a class="btn btn-info btn-sm" data-toggle="collapse" role="button" href="#usedBookList"
+                       aria-expanded="false" aria-controls="collapseExample" style="width: 8rem;" th:text="'알라딘 중고 (' + ${#lists.size(usedBookList)} + ')'"></a>
+                    <br>
+
+                    <div class="collapse" id="usedBookList">
+                        <br>
+                        <div class="card card-body">
+                            <table class="table" >
+                                <tbody>
+                                    <tr th:each="usedBookInfo, i : ${usedBookList}">
+                                        <td th:text="${usedBookInfo.offName}" th:style="${(i.index==0) ? 'border: none' : ''}"/>
+                                        <td th:style="${(i.index==0) ? 'border: none' : ''}">
+                                            <a th:href="${usedBookInfo.link}" role="button" class="btn btn-link btn-sm" target="_blank" style="width: 8rem">이동</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <br>
+
             <button type="button" class="btn btn-primary btn-block btn-sm" th:onclick="'updateBook(' + ${updateForm.id} + ')'">수정</button>
             <button type="button" class="btn btn-secondary btn-block btn-sm" th:onclick="moveBack()">돌아가기</button>
             <button type="button" class="btn btn-danger btn-block btn-sm" th:onclick="'deleteBook(' + ${updateForm.id} + ')'">삭제</button>
@@ -88,6 +119,7 @@
 </div>
 </body>
 <script>
+
     $(function() {
         $('#readStartInput').datepicker({
             format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
@@ -165,8 +197,6 @@
             memo: document.getElementById("memoInput").value
         };
 
-        console.log(data);
-
         // check validation
         if (data.readStatus == "PLANNED") {
 
@@ -212,8 +242,11 @@
     }
 
     function getSummaryLinkValue(){
-        let link = document.getElementById("summaryLinkInput").value;
-        window.open(link, '_blank');
+        let linkUrl = document.getElementById('summaryLinkInput').value;
+
+        if (linkUrl != '') {
+            window.open(linkUrl, '_blank');
+        }
     }
 
 </script>

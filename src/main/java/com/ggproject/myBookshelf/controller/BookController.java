@@ -7,8 +7,10 @@ import com.ggproject.myBookshelf.domain.ReadStatus;
 import com.ggproject.myBookshelf.dto.BookListResponseDto;
 import com.ggproject.myBookshelf.dto.BookSearchResponseDto;
 import com.ggproject.myBookshelf.dto.BookUpdateRequestDto;
+import com.ggproject.myBookshelf.dto.UsedBookSearchResponseDto;
 import com.ggproject.myBookshelf.service.BookService;
-import com.ggproject.myBookshelf.service.api.BookSearchService;
+import com.ggproject.myBookshelf.service.api.AladinBookSerachService;
+import com.ggproject.myBookshelf.service.api.KaKaoBookSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +23,8 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
-    private final BookSearchService bookSearchService;
+    private final KaKaoBookSearchService kaKaoBookSearchService;
+    private final AladinBookSerachService aladinBookSerachService;
 
     @GetMapping("/api/v1/books/readingList")
     public String booksReading(Model model, @LoginUser SessionUser user) {
@@ -95,7 +98,7 @@ public class BookController {
             return  "redirect:/api/v1/books/new";
         }
 
-        BookSearchResponseDto bookInformations = bookSearchService.getBookInformations(searchKeyword, searchPage);
+        BookSearchResponseDto bookInformations = kaKaoBookSearchService.getBookInformations(searchKeyword, searchPage);
 
         model.addAttribute("userName", user.getName());
         model.addAttribute("userPicture", user.getPicture());
@@ -113,10 +116,12 @@ public class BookController {
 
         Book findBook = bookService.findOne(bookId);
         BookUpdateRequestDto updateDto = new BookUpdateRequestDto(findBook);
+        UsedBookSearchResponseDto usedBookList = aladinBookSerachService.getBookInformations(findBook.getIsbn());
 
         model.addAttribute("userName", user.getName());
         model.addAttribute("userPicture", user.getPicture());
         model.addAttribute("updateForm", updateDto);
+        model.addAttribute("usedBookList", usedBookList.getStoreList());
 
         return "books/book-update";
     }
