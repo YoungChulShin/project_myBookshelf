@@ -37,7 +37,7 @@ deploy:
     key: mybookshelf.zip
     bundle_type: zip
     application: mybookshelf
-    deploy_group: mybookshelf-group
+    deployment_group: mybookshelf-group
     region: ap-northeast-2
     wait-until-deployed: true
 
