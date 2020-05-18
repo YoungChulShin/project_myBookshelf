@@ -31,3 +31,5 @@ hs_err_pid*
 # properties
 application-oauth.yml
 application-api.yml
+
+/build/
