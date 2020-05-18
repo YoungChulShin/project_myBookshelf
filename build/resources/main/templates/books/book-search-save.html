@@ -2,73 +2,111 @@
 <html xmlns:th="http://www.thymeleaf.com">
 
 <head th:replace="layouts/header :: header" />
+
 <style>
-.fieldError { border-color: #bd2130;
-} </style>
+    .content {
+        font-size: small;
+    }
+
+    .btn-sm {
+        font-size: small;
+    }
+</style>
 
 <body>
-
-<div class="container">
+<div class="content">
 
     <div th:replace="layouts/body-header :: bodyHeader" />
 
-    <div class="col-md-12">
+    <div class="container">
+        <div class="col-md-12">
+            <br>
+            <div style="font-size: medium">책 추가하기</div>
+            <br>
 
-        <h5>책 추가하기</h5>
-        <br>
+            <div class="input-group">
+                <input id="search-keyword" type="text" class="form-control" placeholder="제목 또는 저자를 입력해주세요" style="font-size: small">
+                <button id="btn-search-book" class="btn btn-warning btn-sm" type="button" onclick="searchBook()" style="margin:0 0 0 10px">검색</button>
+            </div>
+            <br>
 
-        <div class="input-group">
-            <input id="search-keyword" type="text" class="form-control" placeholder="제목 또는 저자를 입력해주세요">
-            <button id="btn-search-book" class="btn btn-info" type="button" onclick="searchBook()" style="margin:0 0 0 10px">검색</button>
+            <!--검색 목록-->
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>사진</th>
+                    <th>제목</th>
+                    <th>선택</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="searchItem, i : ${searchResult}">
+                    <td><img th:src="${searchItem.thumbnail}" width="100px" height="100px" /></td>
+                    <td>
+                        <dl>
+                            <dt th:id="'titleId' + ${i.index}" th:text="'제목 : ' + ${searchItem.title}" />
+                            <dt th:id="'authorId' + ${i.index}" th:text="'저자 : ' + ${#strings.listJoin(searchItem.authors, ', ')}"/>
+                            <dt th:id="'isbnId' + ${i.index}" th:text="'ISBN : ' + ${#strings.arraySplit(searchItem.isbn, ' ')[#lists.size(#strings.arraySplit(searchItem.isbn, ' ')) - 1]}"/>
+                            <dt th:id="'infoLink' + ${i.index}" th:text="${searchItem.url}" style="display: none"/>
+                        </dl>
+                    </td>
+                    <td>
+                        <dl>
+                            <dt><a th:href="${searchItem.url}" target="_blank" role="button" class="btn btn-secondary btn-sm" th:text="정보"/></dt>
+                            <br>
+                            <dt><a th:href="'javascript:createBook('+${i.index}+')'" role="button" class="btn btn-primary btn-sm">선택</a></dt>
+                        </dl>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <nav th:if="${searchMeta != null}" aria-label="Page navigation">
+                <ul class="pagination justify-content-center"
+                    th:with="startNumber=${T(Math).floor((searchPage-1)/10)}*10+1,
+                             endNumber=(${T(Math).floor(searchMeta.pageableCount/10)} > ${startNumber}+9) ? ${startNumber} + 9 : ${T(Math).floor(searchMeta.pageableCount/10)}">
+
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/api/v1/books/new/{searchKeyword}/1 (searchKeyword=${searchKeyword})}">&laquo;</a>
+                    </li>
+
+                    <li th:style="(${searchPage} == 1) ? 'display:none'">
+                        <a class="page-link" th:href="@{/api/v1/books/new/{searchKeyword}/{page} (searchKeyword=${searchKeyword},page=${searchPage-1})}">&lsaquo;</a>
+                    </li>
+
+                    <li th:each="page : ${#numbers.sequence(startNumber, endNumber)}"
+                        class="page-item"
+                        th:th:classappend="(${page} == ${searchPage}) ? active">
+                        <a class="page-link" th:href="@{/api/v1/books/new/{searchKeyword}/{page} (searchKeyword=${searchKeyword},page=${page})}" th:text="${page}"></a>
+                    </li>
+
+                    <li th:style="${isEnd} ? 'display:none'">
+                        <a class="page-link" th:href="@{/api/v1/books/new/{searchKeyword}/{page} (searchKeyword=${searchKeyword},page=${searchPage+1})}">&rsaquo;</a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/api/v1/books/new/{searchKeyword}/{page} (searchKeyword=${searchKeyword},page=${searchMeta.pageableCount/10})}">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <br>
+            <a href="/" role="button" class="btn btn-secondary btn-block btn-sm">돌아가기</a>
         </div>
-
-        <br>
-
-        <!--검색 목록-->
-        <table class="table">
-            <col width="20%"/>
-            <col width="60%"/>
-            <col width="10%"/>
-            <col width="10%"/>
-            <thead>
-            <tr>
-                <th>사진</th>
-                <th>제목</th>
-                <th>정보</th>
-                <th>선택</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="searchItem, i : ${searchResult}">
-                <td><img th:src="${searchItem.thumbnail}" width="100px" height="100px" /></td>
-                <td>
-                    <dl>
-                        <dt th:id="'titleId' + ${i.index}" th:text="'제목 : ' + ${searchItem.title}" />
-                        <dt th:id="'authorId' + ${i.index}" th:text="'저자 : ' + ${#strings.listJoin(searchItem.authors, ', ')}"/>
-                        <dt th:id="'isbnId' + ${i.index}" th:text="'ISBN : ' + ${#strings.arraySplit(searchItem.isbn, ' ')[#lists.size(#strings.arraySplit(searchItem.isbn, ' ')) - 1]}"/>
-                    </dl>
-                </td>
-                <td>
-                    <a th:href="${searchItem.url}" target="_blank" role="button" class="btn btn-secondary" th:text="정보"/>
-                </td>
-                <td>
-                    <a th:href="'javascript:createBook('+${i.index}+')'" role="button" class="btn btn-primary">선택</a>
-                </td>
-            </tr>
-            </tbody>
-
-        </table>
-
-        <br>
-        <a href="/" role="button" class="btn btn-secondary btn-block">돌아가기</a>
     </div>
+
+    <div th:replace="layouts/footer :: footer" />
 </div>
-
-<div th:replace="layouts/footer :: footer" />
-
 </body>
 
 <script>
+
+    document.getElementById('search-keyword').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            searchBook()
+        }
+    });
 
     function searchBook() {
         let searchKeyword = document.getElementById("search-keyword").value;
@@ -80,7 +118,7 @@
 
         let form = document.createElement("form");
         form.setAttribute("method", "get");
-        form.setAttribute("action", "/api/v1/books/new/" + searchKeyword);
+        form.setAttribute("action", "/api/v1/books/new/" + searchKeyword + '/1');
         document.body.appendChild(form);
         form.submit();
     }
@@ -89,7 +127,8 @@
         const data = {
             bookName: document.getElementById("titleId" + id).textContent.split(':')[1].trim(),
             isbn: document.getElementById("isbnId" + id).textContent.split(':')[1].trim(),
-            author: document.getElementById("authorId" + id).textContent.split(':')[1].trim()
+            author: document.getElementById("authorId" + id).textContent.split(':')[1].trim(),
+            infoLink: document.getElementById("infoLink" + id).textContent.trim()
         }
 
         $.ajax({
@@ -99,7 +138,6 @@
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            alert('책이 등록되었습니다');
             window.location.href = '/api/v1/books/plannedList';
         }).fail(function (error) {
             alert(JSON.stringify(error));

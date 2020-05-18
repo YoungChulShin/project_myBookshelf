@@ -3,37 +3,49 @@
 
 <head th:replace="layouts/header :: header" />
 
-<body>
-<div class="container">
+<style>
+    .content {
+        font-size: small;
+    }
+    .form-control, .custom-select {
+        font-size: small;
+    }
+    .btn-sm {
+        font-size: small;
+    }
+</style>
 
+<body>
+<div class="content">
     <div th:replace="layouts/body-header :: bodyHeader" />
 
-    <div class="col-md-12">
-        <h5 th:text="${updateForm.name}"></h5>
-        <br>
-        <form role="form" th:action="@{/api/v1/books/{id}/update (id=${updateForm.id})}" th:object="${updateForm}" method="post">
+    <div class="container">
+        <div class="col-md-12">
+            <br>
+            <div th:text="${updateForm.name}" style="font-size: medium"></div>
+            <br>
             <div class="form-row">
                 <label class="col-sm-2 col-form-label">제목</label>
                 <div class="form-group col-md-10">
-                    <input type="text" class="form-control" th:field="*{name}"/>
+                    <input id="bookNameInput" type="text" class="form-control" th:value="${updateForm.name}" readonly="readonly"/>
                 </div>
             </div>
             <div class="form-row">
                 <label class="col-sm-2 col-form-label">저자</label>
                 <div class="form-group col-md-10">
-                    <input type="text" class="form-control" th:field="*{author}"/>
+                    <input id="authorInput" type="text" class="form-control" th:value="${updateForm.author}" readonly="readonly"/>
                 </div>
             </div>
             <div class="form-row">
                 <label class="col-sm-2 col-form-label">ISBN</label>
                 <div class="form-group col-md-10">
-                    <input type="text" class="form-control" th:field="*{isbn}"/>
+                    <input id="isbnInput" type="text" class="form-control" th:value="${updateForm.isbn}" readonly="readonly"/>
                 </div>
             </div>
             <div class="form-row">
                 <label class="col-sm-2 col-form-label">독서 상태</label>
                 <div class="form-group col-md-10">
-                    <select id="readStatus" th:field="*{readStatus}" class="custom-select">
+                    <select id="readStatusInput" th:field="${updateForm.readStatus}" class="custom-select">
                         <option th:each="readStatus : ${T(com.ggproject.myBookshelf.domain.ReadStatus).values()}"
                                 th:value="${readStatus}" th:text="${readStatus.displayValue}"/>
                     </select>
@@ -42,51 +54,74 @@
             <div class="form-row">
                 <label class="col-sm-2 col-form-label">독서 기간</label>
                 <div class="form-group col-md-4">
-                    <input type="text" id="datePicker" class="form-control" th:field="*{readStartString}">
+                    <input type="text" id="readStartInput" class="form-control" th:value="${#temporals.format(updateForm.readStart, 'yyyy-MM-dd')}" readonly="readonly">
                 </div>
                 <div class="form-group col-md-2 text-center">
                     <label class="col-sm-2 col-form-label">~</label>
                 </div>
                 <div class="form-group col-md-4">
-                    <input type="text" id="datePicker2" class="form-control" th:field="*{readEndString}">
+                    <input type="text" id="readEndInput" class="form-control" th:value="${#temporals.format(updateForm.readEnd, 'yyyy-MM-dd')}" readonly="readonly">
                 </div>
             </div>
             <div class="form-row">
                 <label class="col-sm-2 col-form-label">정리 Link</label>
                 <div class="form-group col-md-8">
-                    <input type="text" id="summaryLink" class="form-control" th:field="*{summaryLink}"/>
+                    <input type="text" id="summaryLinkInput" class="form-control" th:value="${updateForm.summaryLink}"/>
                 </div>
                 <div class="form-group col-md-2">
-<!--                    <a th:target="_blank" th:href="'javascript:getSummaryLinkValue()'" role="button" class="btn btn-warning btn-block">이동</a>-->
-
-                    <button type="button" class="btn btn-warning btn-block" onclick="getSummaryLinkValue();">이동</button>
+                    <button type="button" class="btn btn-info btn-block btn-sm" onclick="getSummaryLinkValue()">이동</button>
                 </div>
             </div>
             <div class="form-row">
                 <label class="col-sm-2 col-form-label">한줄 메모</label>
                 <div class="form-group col-md-10">
-                    <input type="text" class="form-control" th:field="*{memo}"/>
+                    <input id="memoInput" type="text" class="form-control" th:value="${updateForm.memo}"/>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label">기타 정보</label>
+                <div class="form-group col-md-10">
+                    <a th:href="${updateForm.infoLink}" target="_blank" class="btn btn-info btn-sm"
+                       style="margin-left: auto; margin-right: 10px;width: 8rem">책 정보</a>
+                    <a class="btn btn-info btn-sm" data-toggle="collapse" role="button" href="#usedBookList"
+                       aria-expanded="false" aria-controls="collapseExample" style="width: 8rem;" th:text="'알라딘 중고 (' + ${#lists.size(usedBookList)} + ')'"></a>
+                    <br>
+
+                    <div class="collapse" id="usedBookList">
+                        <br>
+                        <div class="card card-body">
+                            <table class="table" >
+                                <tbody>
+                                    <tr th:each="usedBookInfo, i : ${usedBookList}">
+                                        <td th:text="${usedBookInfo.offName}" th:style="${(i.index==0) ? 'border: none' : ''}"/>
+                                        <td th:style="${(i.index==0) ? 'border: none' : ''}">
+                                            <a th:href="${usedBookInfo.link}" role="button" class="btn btn-link btn-sm" target="_blank" style="width: 8rem">이동</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             <br>
-            <button type="submit" class="btn btn-primary btn-block">수정</button>
 
-        </form>
+            <button type="button" class="btn btn-primary btn-block btn-sm" th:onclick="'updateBook(' + ${updateForm.id} + ')'">수정</button>
+            <button type="button" class="btn btn-secondary btn-block btn-sm" th:onclick="moveBack()">돌아가기</button>
+            <button type="button" class="btn btn-danger btn-block btn-sm" th:onclick="'deleteBook(' + ${updateForm.id} + ')'">삭제</button>
+        </div>
+
         <br>
-        <button type="button" class="btn btn-danger btn-block" onclick="cancel();">삭제</button>
     </div>
 
     <div th:replace="layouts/footer :: footer" />
-
 </div>
-
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
-
 </body>
 <script>
+
     $(function() {
-        $('#datePicker').datepicker({
+        $('#readStartInput').datepicker({
             format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
             autoclose : true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
             calendarWeeks : false, //캘린더 옆에 몇 주차인지 보여주는 옵션 기본값 false 보여주려면 true
@@ -109,7 +144,7 @@
     });//ready end
 
     $(function() {
-        $('#datePicker2').datepicker({
+        $('#readEndInput').datepicker({
             format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
             autoclose : true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
             calendarWeeks : false, //캘린더 옆에 몇 주차인지 보여주는 옵션 기본값 false 보여주려면 true
@@ -131,20 +166,96 @@
         });//datepicker end
     });//ready end
 
-    function cancel() {
+    function deleteBook(id) {
 
-        alert(${updateForm.id});
+        if (!confirm('삭제하시겠습니까?')) {
+            return;
+        }
 
-        // let form = document.createElement("form");
-        // form.setAttribute("method", "post");
-        // form.setAttribute("action", "/api/v1/books/" + id + "/delete");
-        // document.body.appendChild(form);
-        // form.submit();
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/books/' + id + '/delete',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+        }).done(function() {
+            window.location.href = '/api/v1/books/plannedList';
+        }).fail(function(error) {
+            alert(JSON.stringify(error));
+        });
+    }
+    
+    function updateBook(id) {
+
+        if (!confirm('수정하시겠습니까?')) {
+            return;
+        }
+
+        // variables
+        let readStartDate = (document.getElementById("readStartInput") != null) ? document.getElementById("readStartInput").value : "";
+        let readEndDate = (document.getElementById("readEndInput") != null) ? document.getElementById("readEndInput").value : "";
+
+        const data = {
+            id: id,
+            name: document.getElementById("bookNameInput").value,
+            isbn: document.getElementById("isbnInput").value,
+            author: document.getElementById("authorInput").value,
+            readStatus: document.getElementById("readStatusInput").value,
+            readStartString: (readStartDate != "") ? readStartDate + ' 00:00:00' : '',
+            readEndString: (readEndDate != "") ? readEndDate + ' 00:00:00' : '',
+            summaryLink: document.getElementById("summaryLinkInput").value,
+            memo: document.getElementById("memoInput").value
+        };
+
+        // check validation
+        if (data.readStatus == "PLANNED") {
+
+            if (readStartDate == "" && readEndDate != "") {
+                alert('올바른 독서 기간을 선택해주세요');
+                return;
+            }
+        } else if (data.readStatus == "READING") {
+
+            if (readStartDate == "") {
+                alert('독서 시작 기간을 선택해주세요');
+                return;
+            }
+        } else if (data.readStatus == "COMPLETED") {
+
+            if (readStartDate == "") {
+                alert('독서 시작 기간을 선택해주세요');
+                return;
+            }
+
+            if (readEndDate == "") {
+                alert('독서 완료 기간을 선택해주세요');
+                return;
+            }
+        }
+
+        // execute update
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/books/' + id + '/update',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function () {
+            window.history.back();
+        }).fail(function(error) {
+            alert(JSON.stringify(error));
+        });
+    }
+
+    function moveBack() {
+        window.history.back();
     }
 
     function getSummaryLinkValue(){
-        let link = document.getElementById("summaryLink").value;
-        window.open(link, '_blank');
+        let linkUrl = document.getElementById('summaryLinkInput').value;
+
+        if (linkUrl != '') {
+            window.open(linkUrl, '_blank');
+        }
     }
 
 </script>

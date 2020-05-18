@@ -1,5 +1,4 @@
 spring:
-  profiles.include: oauth, api
   datasource:
     url: jdbc:h2:mem:test
     username: sa
@@ -12,7 +11,23 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: testId
+            client-secret: -1234567890
+            scope: profile,email
 
 logging:
   level:
     org.hibernate.SQL: debug
+
+api-property:
+  kakao-book-search:
+    api-url: testUrl
+    api-key: testKey
+  aladin-book-search:
+    api-url: testUrl
+    api-key: testKey
