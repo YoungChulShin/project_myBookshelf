@@ -20,15 +20,26 @@ before_deploy:
   - mv myBookshelf.zip deploy/myBookshelf.zip
 
 deploy:
-  provider: s3
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  bucket: mybookshelf-build
-  region: ap-northeast-2
-  skip_cleanup: true
-  acl: private
-  local_dir: deploy
-  wait-until-deployed: true
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: mybookshelf-build
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private
+    local_dir: deploy
+    wait-until-deployed: true
+
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: mybookshelf-build
+    key: mybookshelf.zip
+    bundle_type: zip
+    application: mybookshelf
+    deploy_group: mybookshelf-group
+    region: ap-northeast-2
+    wait-until-deployed: true
 
 # CI 실행 완료시 메일로 알람
 notifications:
