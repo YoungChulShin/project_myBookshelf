@@ -3,8 +3,6 @@
 REPOSITORY=/home/ec2-user/app/step2
 PROGRAM_NAME=myBookshelf
 
-cd $REPOSITORY/$PROJECT_NAME/
-
 echo "> build 파일 복사"
 
 cp $REPOSITORY/zip/*.jar $REPOSITORY/
@@ -25,7 +23,7 @@ fi
 
 echo "> 새 애플리케이션 배포"
 
-JAR_NAME=$(ls -tr $REPOSITORY/*.jar | grep *.jar | tail -n 1)
+JAR_NAME=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
 
 echo "> JAR Name: $JAR_NAME"
 
