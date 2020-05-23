@@ -18,4 +18,8 @@ public class UsedBookSearchStoreInfoDto {
 
     @JsonProperty("link")
     private String link;
+
+    public void setLink(String link) {
+        this.link = link.replace("&amp;", "&");
+    }
 }
