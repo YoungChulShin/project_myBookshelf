@@ -72,7 +72,9 @@
                            th:value="${#temporals.format(updateForm.readStart, 'yyyy-MM-dd')}" readonly="readonly">
                 </div>
                 <div class="col-2">
-                    <button type="button" class="btn btn-danger btn-block btn-sm" onclick="clearReadStartDate()">삭제</button>
+                    <button type="button" class="btn btn-danger btn-block btn-sm" onclick="clearReadStartDate()">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
                 </div>
             </div>
 
@@ -85,7 +87,9 @@
                            th:value="${#temporals.format(updateForm.readEnd, 'yyyy-MM-dd')}" readonly="readonly">
                 </div>
                 <div class="col-2">
-                    <button type="button" class="btn btn-danger btn-block btn-sm" onclick="clearReadEndDate()">삭제</button>
+                    <button type="button" class="btn btn-danger btn-block btn-sm" onclick="clearReadEndDate()">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
                 </div>
             </div>
 
@@ -97,7 +101,9 @@
                     <input type="text" id="summaryLinkInput" class="form-control" th:value="${updateForm.summaryLink}"/>
                 </div>
                 <div class="col-2">
-                    <button type="button" class="btn btn-info btn-block btn-sm" onclick="getSummaryLinkValue()">이동</button>
+                    <button type="button" class="btn btn-info btn-block btn-sm" onclick="getSummaryLinkValue()">
+                        <i class="fas fa-link"></i>
+                    </button>
                 </div>
             </div>
 
