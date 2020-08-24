@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mybookshelf
+  labels:
+    app: mybookshelf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mybookshelf
+  template:
+    metadata:
+      labels:
+        app: mybookshelf
+    spec:
+      containers:
+      - name: mybookshelf
+        image: asia.gcr.io/study-k8s-280123/mybookshelf
+        env:
+          - name: API_KAKAO_KEY
+            valueFrom:
+              secretKeyRef:
+                name: mybook-secret
+                key: api.kakao.key
+          - name: API_ALADIN_KEY
+            valueFrom:
+              secretKeyRef:
+                name: mybook-secret
+                key: api.aladin.key
+          - name: DB_URL
+            valueFrom:
+              configMapKeyRef:
+                name: mybook-configmap
+                key: db.url
+          - name: DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: mybook-configmap
+                key: db.port
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: mybook-secret
+                key: db.user
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mybook-secret
+                key: db.password
+          - name: OAUTH_GOOGLE_ID
+            valueFrom:
+              secretKeyRef:
+                name: mybook-secret
+                key: oauth.google.id
+          - name: OAUTH_GOOGLE_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: mybook-secret
+                key: oauth.google.secret
+        ports:
+        - containerPort: 8080
