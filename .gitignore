@@ -27,9 +27,11 @@ hs_err_pid*
 # Git
 .gradle
 .idea
+/build/
 
 # properties
 application-oauth.yml
 application-api.yml
-
-/build/
+application-real-api.yml
+application-real-db.yml
+application-real-oauth.yml

@@ -1,0 +1,7 @@
+api-property:
+  kakao-book-search:
+    api-url: https://dapi.kakao.com//v3/search/book
+    api-key: KakaoAK ${API_KAKAO_KEY}
+  aladin-book-search:
+    api-url: http://www.aladin.co.kr/ttb/api/ItemOffStoreList.aspx
+    api-key: ${API_ALADIN_KEY}

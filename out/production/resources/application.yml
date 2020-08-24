@@ -9,6 +9,11 @@ spring:
   profiles.include: oauth, api
   session:
     store-type: jdbc
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/my_bookshelf
+#    username: root
+#    password: 1323
+#    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: create
@@ -24,7 +29,7 @@ logging:
 
 spring:
   profiles: real
-  profiles.include: oauth, real-db, api
+  profiles.include: real-oauth, real-db, real-api
   jpa:
     properties:
       hibernate:
